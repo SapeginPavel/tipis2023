@@ -146,7 +146,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Slider fx:id="sliderRate_2_atta" max="120.0" min="20.0">
+                  <Slider fx:id="sliderRate_2_atta" max="120.0" min="20.0" value="20.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>

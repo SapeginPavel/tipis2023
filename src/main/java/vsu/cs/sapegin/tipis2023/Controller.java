@@ -1,6 +1,8 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,8 +10,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
+import vsu.cs.sapegin.tipis2023.second_atta.EventHandler;
 
 public class Controller {
+
+    List<LineChart> lineCharts_2_atta = null;
+    List<LineChart> lineChartsRange_2_atta = null;
 
     @FXML
     private ResourceBundle resources;
@@ -60,7 +66,8 @@ public class Controller {
 
     @FXML
     void onClickReset_2_atta(ActionEvent event) {
-
+        EventHandler.resetLineCharts(lineCharts_2_atta);
+        EventHandler.resetLineCharts(lineChartsRange_2_atta);
     }
 
     @FXML
@@ -78,6 +85,8 @@ public class Controller {
         assert sliderRate_2_atta != null : "fx:id=\"sliderRate_2_atta\" was not injected: check your FXML file 'view.fxml'.";
         assert tickPeaks_2_atta != null : "fx:id=\"tickPeaks_2_atta\" was not injected: check your FXML file 'view.fxml'.";
 
+        lineCharts_2_atta =  List.of(lchOrigSignal_2_atta, lchAmplitudeModulation_2_atta, lchFrequencyModulation_2_atta, lchPhaseModulation_2_atta);
+        lineChartsRange_2_atta = List.of(lchOrigSignalRange_2_atta, lchAmplitudeModulationRange_2_atta, lchFrequencyModulationRange_2_atta, lchPhaseModulationRange_2_atta);
     }
 
 }
