@@ -112,9 +112,7 @@ public class Controller {
     }
 
     private Point2D[] generatePointsFromDFT(Point2D[] points) {
-//        System.out.println(Arrays.toString(points));
         Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
-//        System.out.println(Arrays.toString(pointsByStep));
 
         double[] y = new double[pointsByStep.length];
         for (int i = 0; i < y.length; i++) {
