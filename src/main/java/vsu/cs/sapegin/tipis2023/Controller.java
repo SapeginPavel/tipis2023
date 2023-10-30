@@ -1,6 +1,7 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -111,7 +112,10 @@ public class Controller {
     }
 
     private Point2D[] generatePointsFromDFT(Point2D[] points) {
+//        System.out.println(Arrays.toString(points));
         Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
+//        System.out.println(Arrays.toString(pointsByStep));
+
         double[] y = new double[pointsByStep.length];
         for (int i = 0; i < y.length; i++) {
             y[i] = pointsByStep[i].getY();

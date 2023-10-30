@@ -7,13 +7,11 @@ public class Options {
     private static int frequencyBase = 8;
     private static int frequencyMod = 14;
 
-    private static double phaseShift = Math.PI / 2;
-
     private static int meanderFrequency = 1;
 
     private static double defaultMinX = 0;
     private static double defaultMaxX = 3;
-    private static int defaultAmountOfPointsForUnitSegment = 512;
+    private static int defaultAmountOfPointsForUnitSegment = 256;
 
     //фаза
 

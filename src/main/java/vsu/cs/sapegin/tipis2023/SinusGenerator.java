@@ -51,13 +51,14 @@ public class SinusGenerator {
                 }
             }
             points.addAll(Arrays.asList(temp));
+            points.remove(points.size() - 1);
         }
         return points.toArray(new Point2D[0]);
     }
 
     public static Point2D[] getPointsForSinusForSegment(int frequency, int amplitude, double startX, double endX) {
         int amountOfPointsForSegment = Options.getDefaultAmountOfPointsForUnitSegment();
-        double deltaX = 1.0 / amountOfPointsForSegment; //(endX - startX)
+        double deltaX = 1.0 / amountOfPointsForSegment;
         int sizeOfSegment = (int) (amountOfPointsForSegment * (endX - startX));
         Point2D[] points = new Point2D[sizeOfSegment];
         double currentX = startX;
