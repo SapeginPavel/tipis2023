@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -62,17 +63,34 @@ public class Controller {
 
     @FXML
     void onClickBuild_2_atta(ActionEvent event) {
-        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForDefaultSinus()));
-        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX())));
-        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX())));
-        lchPhaseModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX())));
+        Point2D[] pointsOrig = SinusGenerator.getPointsForDefaultSinus();
+        Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
+        Point2D[] pointsFreqMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
+        Point2D[] pointsPhaseMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX());
+
+        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(pointsOrig));
+        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsAmplMod));
+        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsFreqMod));
+        lchPhaseModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsPhaseMod));
+
+
         //самый показательный пример - когда частота равна 2
+    }
+
+    private void buildRanges() {
+
     }
 
     @FXML
     void onClickReset_2_atta(ActionEvent event) {
-        EventHandler.resetLineCharts(lineCharts_2_atta);
-        EventHandler.resetLineCharts(lineChartsRange_2_atta);
+//        EventHandler.resetLineCharts(lineCharts_2_atta);
+//        EventHandler.resetLineCharts(lineChartsRange_2_atta);
+        for (LineChart l : lineCharts_2_atta) {
+            l.getData().clear();
+        }
+        for (LineChart l : lineChartsRange_2_atta) {
+            l.getData().clear();
+        }
     }
 
     @FXML
