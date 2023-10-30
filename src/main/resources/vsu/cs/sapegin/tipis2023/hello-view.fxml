@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vsu.cs.sapegin.tipis2023.Controller">
+   <children>
+      <Pane prefHeight="700.0" prefWidth="1200.0">
+         <children>
+            <VBox layoutX="15.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
+                <children>
+                    <LineChart fx:id="lchOrigSignal_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                        <xAxis>
+                            <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                                <tickLabelFont>
+                                    <Font name="Times New Roman" size="14.0" />
+                                </tickLabelFont>
+                            </NumberAxis>
+                        </yAxis>
+                    </LineChart>
+                  <LineChart fx:id="lchAmplitudeModulation_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="lchFrequencyModulation_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="lchPhaseModulation_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+
+                </children>
+            </VBox>
+            <VBox layoutX="480.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
+               <children>
+                  <LineChart fx:id="lchOrigSignalRange_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickMarkVisible="false" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="lchAmplitudeModulationRange_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickMarkVisible="false" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="lchFrequencyModulationRange_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickMarkVisible="false" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="lchPhaseModulationRange_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
+                     <xAxis>
+                        <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickMarkVisible="false" tickUnit="0.0" upperBound="1.0">
+                           <tickLabelFont>
+                              <Font name="Times New Roman" size="14.0" />
+                           </tickLabelFont>
+                        </NumberAxis>
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" layoutX="960.0" layoutY="70.0" prefHeight="319.0" prefWidth="210.0">
+               <children>
+                  <Label text="Частота дискретизации" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Slider max="120.0" min="20.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Slider>
+                  <Label text="Отмечать пики?" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="TOP_CENTER" prefHeight="8.0" prefWidth="210.0">
+                     <children>
+                        <RadioButton mnemonicParsing="false" text="Да">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
+                           </HBox.margin>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="tickPeaks_2_atta" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton mnemonicParsing="false" selected="true" text="Нет" toggleGroup="$tickPeaks_2_atta">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
+                           </HBox.margin>
+                        </RadioButton>
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" text="Построить" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Сбросить" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </children>
+</Pane>
