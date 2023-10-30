@@ -1,20 +1,26 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
-import vsu.cs.sapegin.tipis2023.second_atta.EventHandler;
+import vsu.cs.sapegin.tipis2023.dft.DFT;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
+import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 public class Controller {
+
+    int sampleRate;
 
     List<LineChart> lineCharts_2_atta = null;
     List<LineChart> lineChartsRange_2_atta = null;
@@ -50,13 +56,25 @@ public class Controller {
     private LineChart<?, ?> lchPhaseModulation_2_atta;
 
     @FXML
+    private RadioButton radioButtonSampleRate128_2_atta;
+
+    @FXML
+    private RadioButton radioButtonSampleRate256_2_atta;
+
+    @FXML
+    private RadioButton radioButtonSampleRate32_2_atta;
+
+    @FXML
+    private RadioButton radioButtonSampleRate64_2_atta;
+
+    @FXML
     private RadioButton radioButtonTickNo_2_atta;
 
     @FXML
     private RadioButton radioButtonTickYes_2_atta;
 
     @FXML
-    private Slider sliderRate_2_atta;
+    private ToggleGroup toggleGroupSampleRate_2_atta;
 
     @FXML
     private ToggleGroup tickPeaks_2_atta;
@@ -67,18 +85,47 @@ public class Controller {
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         Point2D[] pointsFreqMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         Point2D[] pointsPhaseMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX());
-
-        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(pointsOrig));
-        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsAmplMod));
-        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsFreqMod));
-        lchPhaseModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsPhaseMod));
-
-
         //самый показательный пример - когда частота равна 2
+
+        buildGraphic(lchOrigSignal_2_atta, pointsOrig);
+        buildGraphic(lchAmplitudeModulation_2_atta, pointsAmplMod);
+        buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
+        buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
+
+//        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(pointsOrig));
+//        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsAmplMod));
+//        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsFreqMod));
+//        lchPhaseModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsPhaseMod));
+
+
+        Point2D[] pointsOrigRange = generatePointsFromDFT(pointsOrig);
+        Point2D[] pointsAmplModRange = generatePointsFromDFT(pointsAmplMod);
+        Point2D[] pointsFreqModRange = generatePointsFromDFT(pointsFreqMod);
+        Point2D[] pointsPhaseModRange = generatePointsFromDFT(pointsPhaseMod);
+
+        buildGraphic(lchOrigSignalRange_2_atta, pointsOrigRange);
+        buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
+        buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
+        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
+
     }
 
-    private void buildRanges() {
+    private Point2D[] generatePointsFromDFT(Point2D[] points) {
+        Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
+        double[] y = new double[pointsByStep.length];
+        for (int i = 0; i < y.length; i++) {
+            y[i] = pointsByStep[i].getY();
+        }
+        double[] dftY = DFT.dft(y, sampleRate);
+        Point2D[] resPoints = new Point2D[dftY.length];
+        for (int i = 0; i < resPoints.length; i++) {
+            resPoints[i] = new Point2D(i, dftY[i]);
+        }
+        return resPoints;
+    }
 
+    private void buildGraphic(LineChart lch, Point2D[] points) {
+        lch.getData().add(SeriesGenerator.getSeries(points));
     }
 
     @FXML
@@ -110,12 +157,22 @@ public class Controller {
         assert lchPhaseModulation_2_atta != null : "fx:id=\"lchPhaseModulation_2_atta\" was not injected: check your FXML file 'view.fxml'.";
         assert radioButtonTickNo_2_atta != null : "fx:id=\"radioButtonTickNo_2_atta\" was not injected: check your FXML file 'view.fxml'.";
         assert radioButtonTickYes_2_atta != null : "fx:id=\"radioButtonTickYes_2_atta\" was not injected: check your FXML file 'view.fxml'.";
-        assert sliderRate_2_atta != null : "fx:id=\"sliderRate_2_atta\" was not injected: check your FXML file 'view.fxml'.";
         assert tickPeaks_2_atta != null : "fx:id=\"tickPeaks_2_atta\" was not injected: check your FXML file 'view.fxml'.";
 
         lineCharts_2_atta =  List.of(lchOrigSignal_2_atta, lchAmplitudeModulation_2_atta, lchFrequencyModulation_2_atta, lchPhaseModulation_2_atta);
         lineChartsRange_2_atta = List.of(lchOrigSignalRange_2_atta, lchAmplitudeModulationRange_2_atta, lchFrequencyModulationRange_2_atta, lchPhaseModulationRange_2_atta);
 
+        toggleGroupSampleRate_2_atta.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
+                RadioButton rb = (RadioButton) newValue;
+                sampleRate = Integer.parseInt(rb.getText());
+                System.out.println("sampleRate = " + sampleRate);
+            }
+        });
 
+        RadioButton rb = (RadioButton) toggleGroupSampleRate_2_atta.getSelectedToggle();
+        sampleRate = Integer.parseInt(rb.getText());
+        System.out.println("sampleRate = " + sampleRate);
     }
 }

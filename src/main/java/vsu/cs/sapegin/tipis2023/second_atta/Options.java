@@ -13,7 +13,7 @@ public class Options {
 
     private static double defaultMinX = 0;
     private static double defaultMaxX = 3;
-    private static int defaultAmountOfPointsForUnitSegment = 100;
+    private static int defaultAmountOfPointsForUnitSegment = 512;
 
     //фаза
 

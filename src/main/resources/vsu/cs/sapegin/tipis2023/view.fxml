@@ -9,18 +9,20 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vsu.cs.sapegin.tipis2023.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vsu.cs.sapegin.tipis2023.Controller">
    <children>
-      <Pane prefHeight="700.0" prefWidth="1300.0">
+      <Pane prefHeight="700.0" prefWidth="1200.0">
          <children>
-            <VBox layoutX="15.0" layoutY="70.0" prefHeight="600.0" prefWidth="550.0">
+            <VBox layoutX="15.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
                 <children>
                     <LineChart fx:id="lchOrigSignal_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
                         <xAxis>
@@ -73,7 +75,7 @@
 
                 </children>
             </VBox>
-            <VBox layoutX="580.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
+            <VBox layoutX="480.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
                <children>
                   <LineChart fx:id="lchOrigSignalRange_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
                      <xAxis>
@@ -125,18 +127,63 @@
                   </LineChart>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" layoutX="1060.0" layoutY="70.0" prefHeight="319.0" prefWidth="210.0">
+            <VBox alignment="TOP_CENTER" layoutX="960.0" layoutY="70.0" prefHeight="365.0" prefWidth="210.0">
                <children>
-                  <Label text="Частота дискретизации" textAlignment="CENTER" wrapText="true">
+                  <Label prefHeight="65.0" prefWidth="210.0" text="Частота дискретизации" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Slider fx:id="sliderRate_2_atta" max="120.0" min="20.0" value="20.0">
+                  <GridPane alignment="TOP_CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints />
+                      <RowConstraints />
+                    </rowConstraints>
+                     <children>
+                        <RadioButton fx:id="radioButtonSampleRate64_2_atta" mnemonicParsing="false" text="64" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="toggleGroupSampleRate_2_atta" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="radioButtonSampleRate32_2_atta" mnemonicParsing="false" text="32" toggleGroup="$toggleGroupSampleRate_2_atta">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                        <RadioButton fx:id="radioButtonSampleRate128_2_atta" mnemonicParsing="false" selected="true" text="128" toggleGroup="$toggleGroupSampleRate_2_atta" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                        <RadioButton fx:id="radioButtonSampleRate256_2_atta" mnemonicParsing="false" text="256" toggleGroup="$toggleGroupSampleRate_2_atta" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                     </children>
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
-                  </Slider>
+                  </GridPane>
                   <Label text="Отмечать пики?" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />

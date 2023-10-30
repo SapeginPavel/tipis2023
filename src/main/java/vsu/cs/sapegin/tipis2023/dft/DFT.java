@@ -16,7 +16,7 @@ public class DFT {
 
         double[] resArr = new double[yArrOutput.length];
         for (int i = 0; i < resArr.length; i++) {
-            resArr[i] = Math.sqrt(yArrOutput[i].real * yArrOutput[i].real + yArrOutput[i].im * yArrOutput[i].im);
+            resArr[i] = Math.sqrt(yArrOutput[i].real * yArrOutput[i].real + yArrOutput[i].im * yArrOutput[i].im) / 1000;
         }
         return resArr;
     }

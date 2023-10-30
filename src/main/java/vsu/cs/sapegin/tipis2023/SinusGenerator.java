@@ -39,9 +39,7 @@ public class SinusGenerator {
         int size = (int) (Options.getDefaultAmountOfPointsForUnitSegment() * maxX);
         List<Point2D> points = new ArrayList<>(size);
         double meanderConstLength = 1.0 / meanderFrequency / 2; //длина участка, когда меандр постоянен по значению
-//        System.out.println("meanderConstLength = " + meanderConstLength);
         int amountOfSegments = (int) (maxX / meanderConstLength);
-//        System.out.println("amountOfSegments = " + amountOfSegments);
         for (int i = 0; i < amountOfSegments; i++) {
             Point2D[] temp;
             if (i % 2 == 0) {
@@ -54,7 +52,6 @@ public class SinusGenerator {
             }
             points.addAll(Arrays.asList(temp));
         }
-//        System.out.println("amount of points = " + points.size());
         return points.toArray(new Point2D[0]);
     }
 
