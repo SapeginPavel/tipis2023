@@ -4,13 +4,14 @@ public class Options {
     private static int amplitudeBase = 1;
     private static int amplitudeMod = 2;
 
-    private static int frequencyBase = 10;
-    private static int frequencyMod = 10;
+    private static int frequencyBase = 8;
+    private static int frequencyMod = 14;
 
-    private static int meanderFrequency = 2;
+    private static int meanderFrequency = 1;
 
+    private static double defaultMinX = 0;
     private static double defaultMaxX = 3;
-    private static int defaultAmountOfPointsForUnitSegment = 70;
+    private static int defaultAmountOfPointsForUnitSegment = 100;
 
     //фаза
 
@@ -45,6 +46,14 @@ public class Options {
 
     public static void setFrequencyMod(int frequencyMod) {
         Options.frequencyMod = frequencyMod;
+    }
+
+    public static double getDefaultMinX() {
+        return defaultMinX;
+    }
+
+    public static void setDefaultMinX(double defaultMinX) {
+        Options.defaultMinX = defaultMinX;
     }
 
     public static double getDefaultMaxX() {

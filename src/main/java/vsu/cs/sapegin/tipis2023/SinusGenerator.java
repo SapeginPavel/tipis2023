@@ -9,21 +9,28 @@ import java.util.List;
 
 public class SinusGenerator {
 
+    private static int defaultFrequency = Options.getFrequencyBase();
+    private static int defaultAmplitude = Options.getAmplitudeBase();
+    private static double defaultMinX = Options.getDefaultMinX();
     private static double defaultMaxX = Options.getDefaultMaxX();
     private static int defaultAmountOfPointsForUnitSegment = Options.getDefaultAmountOfPointsForUnitSegment();
 
     //Возможно, в качестве параметра ещё надо будет передавать фазу
 
+    public static Point2D[] getPointsForDefaultSinus() {
+        return getPointsForSinusForSegment(defaultFrequency, defaultAmplitude, defaultMinX, defaultMaxX);
+    }
+
     public static Point2D[] getPointsForSinus(int frequency) {
-        return getPointsForSinusForSegment(frequency, 1, 0, defaultMaxX);
+        return getPointsForSinusForSegment(frequency, defaultAmplitude, defaultMinX, defaultMaxX);
     }
 
     public static Point2D[] getPointsForSinus(int frequency, int amplitude) {
-        return getPointsForSinusForSegment(frequency, amplitude, 0, defaultMaxX);
+        return getPointsForSinusForSegment(frequency, amplitude, defaultMinX, defaultMaxX);
     }
 
     public static Point2D[] getPointsForSinus(int frequency, int amplitude, int maxX) {
-        return getPointsForSinusForSegment(frequency, amplitude, 0, maxX);
+        return getPointsForSinusForSegment(frequency, amplitude, defaultMinX, maxX);
 
     }
 

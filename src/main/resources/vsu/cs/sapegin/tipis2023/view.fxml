@@ -16,11 +16,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vsu.cs.sapegin.tipis2023.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vsu.cs.sapegin.tipis2023.Controller">
    <children>
-      <Pane prefHeight="700.0" prefWidth="1200.0">
+      <Pane prefHeight="700.0" prefWidth="1300.0">
          <children>
-            <VBox layoutX="15.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
+            <VBox layoutX="15.0" layoutY="70.0" prefHeight="600.0" prefWidth="550.0">
                 <children>
                     <LineChart fx:id="lchOrigSignal_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
                         <xAxis>
@@ -73,7 +73,7 @@
 
                 </children>
             </VBox>
-            <VBox layoutX="480.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
+            <VBox layoutX="580.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
                <children>
                   <LineChart fx:id="lchOrigSignalRange_2_atta" cache="true" createSymbols="false" horizontalGridLinesVisible="false" prefHeight="30.0" prefWidth="635.0" verticalGridLinesVisible="false">
                      <xAxis>
@@ -125,7 +125,7 @@
                   </LineChart>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" layoutX="960.0" layoutY="70.0" prefHeight="319.0" prefWidth="210.0">
+            <VBox alignment="TOP_CENTER" layoutX="1060.0" layoutY="70.0" prefHeight="319.0" prefWidth="210.0">
                <children>
                   <Label text="Частота дискретизации" textAlignment="CENTER" wrapText="true">
                      <font>
