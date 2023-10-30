@@ -63,10 +63,10 @@ public class Controller {
     @FXML
     void onClickBuild_2_atta(ActionEvent event) {
         lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForDefaultSinus()));
-//        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinus(Options.getFrequencyBase())));
-//        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusForSegment(2, 1, 0, 0.25)));
-        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), Options.getMeanderFrequency(), Options.getDefaultMaxX())));
-        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), Options.getMeanderFrequency(), Options.getDefaultMaxX())));
+        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX())));
+        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX())));
+        lchPhaseModulation_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX())));
+        //самый показательный пример - когда частота равна 2
     }
 
     @FXML

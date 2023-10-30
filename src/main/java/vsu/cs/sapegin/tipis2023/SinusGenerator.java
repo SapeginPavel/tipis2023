@@ -2,6 +2,7 @@ package vsu.cs.sapegin.tipis2023;
 
 import javafx.geometry.Point2D;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
+import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,23 +35,26 @@ public class SinusGenerator {
 
     }
 
-    public static Point2D[] getPointsForSinusWithModulation(int bFrequency, int mFrequency, int bAmplitude, int mAmplitude, int meanderFrequency, double maxX) {
+    public static Point2D[] getPointsForSinusWithModulation(int bFrequency, int mFrequency, int bAmplitude, int mAmplitude, boolean isPhaseModulation, int meanderFrequency, double maxX) {
         int size = (int) (Options.getDefaultAmountOfPointsForUnitSegment() * maxX);
         List<Point2D> points = new ArrayList<>(size);
         double meanderConstLength = 1.0 / meanderFrequency / 2; //длина участка, когда меандр постоянен по значению
-        System.out.println("meanderConstLength = " + meanderConstLength);
+//        System.out.println("meanderConstLength = " + meanderConstLength);
         int amountOfSegments = (int) (maxX / meanderConstLength);
-        System.out.println("amountOfSegments = " + amountOfSegments);
+//        System.out.println("amountOfSegments = " + amountOfSegments);
         for (int i = 0; i < amountOfSegments; i++) {
             Point2D[] temp;
             if (i % 2 == 0) {
                 temp = getPointsForSinusForSegment(mFrequency, mAmplitude, meanderConstLength * i, (meanderConstLength) * (i + 1));
             } else {
                 temp = getPointsForSinusForSegment(bFrequency, bAmplitude, meanderConstLength * i, (meanderConstLength) * (i + 1));
+                if (isPhaseModulation) {
+                    temp = Utils.getReverseArray(temp);
+                }
             }
             points.addAll(Arrays.asList(temp));
         }
-        System.out.println("amount of points = " + points.size());
+//        System.out.println("amount of points = " + points.size());
         return points.toArray(new Point2D[0]);
     }
 
