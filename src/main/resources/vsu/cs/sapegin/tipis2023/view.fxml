@@ -5,6 +5,9 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -15,6 +18,20 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vsu.cs.sapegin.tipis2023.Controller">
    <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="Файл">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Закрыть" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Задача">
+            <items>
+              <MenuItem mnemonicParsing="false" text="2" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
       <Pane prefHeight="700.0" prefWidth="1200.0">
          <children>
             <VBox layoutX="15.0" layoutY="70.0" prefHeight="600.0" prefWidth="450.0">
@@ -129,7 +146,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Slider max="120.0" min="20.0">
+                  <Slider fx:id="sliderRate_2_atta" max="120.0" min="20.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
@@ -144,7 +161,7 @@
                   </Label>
                   <HBox alignment="TOP_CENTER" prefHeight="8.0" prefWidth="210.0">
                      <children>
-                        <RadioButton mnemonicParsing="false" text="Да">
+                        <RadioButton fx:id="radioButtonTickYes_2_atta" mnemonicParsing="false" text="Да">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -155,7 +172,7 @@
                               <ToggleGroup fx:id="tickPeaks_2_atta" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" selected="true" text="Нет" toggleGroup="$tickPeaks_2_atta">
+                        <RadioButton fx:id="radioButtonTickNo_2_atta" mnemonicParsing="false" selected="true" text="Нет" toggleGroup="$tickPeaks_2_atta">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -165,7 +182,7 @@
                         </RadioButton>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Построить" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onClickBuild_2_atta" text="Построить" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -173,7 +190,7 @@
                         <Insets bottom="5.0" left="15.0" right="15.0" top="20.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Сбросить" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onClickReset_2_atta" text="Сбросить" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
