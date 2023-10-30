@@ -19,7 +19,7 @@ public class SinusGenerator {
     }
 
     public static Point2D[] getPointsForSinus(int frequency, int amplitude, int maxX, int amountOfPointsForSegment) {
-        double deltaX = (maxX + 0.0) / amountOfPointsForSegment;
+        double deltaX = (maxX + 0.0) / amountOfPointsForSegment / maxX;
         Point2D[] points = new Point2D[amountOfPointsForSegment * maxX];
         double currentX = 0;
         for (int i = 0; i < points.length; i++) {

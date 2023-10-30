@@ -11,6 +11,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import vsu.cs.sapegin.tipis2023.second_atta.EventHandler;
+import vsu.cs.sapegin.tipis2023.second_atta.Options;
 
 public class Controller {
 
@@ -61,13 +62,18 @@ public class Controller {
 
     @FXML
     void onClickBuild_2_atta(ActionEvent event) {
-
+        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(SinusGenerator.getPointsForSinus(Options.getFrequencyBase())));
     }
 
     @FXML
     void onClickReset_2_atta(ActionEvent event) {
         EventHandler.resetLineCharts(lineCharts_2_atta);
         EventHandler.resetLineCharts(lineChartsRange_2_atta);
+    }
+
+    @FXML
+    void onClickMenuClose(ActionEvent event) {
+        System.exit(0);
     }
 
     @FXML

@@ -1,44 +1,44 @@
 package vsu.cs.sapegin.tipis2023.second_atta;
 
 public class Options {
-    int amplitudeBase = 1;
-    int amplitudeMod = 2;
+    private static int amplitudeBase = 1;
+    private static int amplitudeMod = 2;
 
-    int frequencyBase = 4;
-    int frequencyMod = 8;
+    private static int frequencyBase = 4;
+    private static int frequencyMod = 8;
 
     //фаза
 
 
-    public int getAmplitudeBase() {
+    public static int getAmplitudeBase() {
         return amplitudeBase;
     }
 
-    public void setAmplitudeBase(int amplitudeBase) {
-        this.amplitudeBase = amplitudeBase;
+    public static void setAmplitudeBase(int amplitudeBase) {
+        Options.amplitudeBase = amplitudeBase;
     }
 
-    public int getAmplitudeMod() {
+    public static int getAmplitudeMod() {
         return amplitudeMod;
     }
 
-    public void setAmplitudeMod(int amplitudeMod) {
-        this.amplitudeMod = amplitudeMod;
+    public static void setAmplitudeMod(int amplitudeMod) {
+        Options.amplitudeMod = amplitudeMod;
     }
 
-    public int getFrequencyBase() {
+    public static int getFrequencyBase() {
         return frequencyBase;
     }
 
-    public void setFrequencyBase(int frequencyBase) {
-        this.frequencyBase = frequencyBase;
+    public static void setFrequencyBase(int frequencyBase) {
+        Options.frequencyBase = frequencyBase;
     }
 
-    public int getFrequencyMod() {
+    public static int getFrequencyMod() {
         return frequencyMod;
     }
 
-    public void setFrequencyMod(int frequencyMod) {
-        this.frequencyMod = frequencyMod;
+    public static void setFrequencyMod(int frequencyMod) {
+        Options.frequencyMod = frequencyMod;
     }
 }
