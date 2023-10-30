@@ -7,6 +7,11 @@ public class Options {
     private static int frequencyBase = 4;
     private static int frequencyMod = 8;
 
+    private static double meanderFrequency = 6;
+
+    private static int defaultMaxX = 5;
+    private static int defaultAmountOfPointsForUnitSegment = 200;
+
     //фаза
 
 
@@ -40,5 +45,29 @@ public class Options {
 
     public static void setFrequencyMod(int frequencyMod) {
         Options.frequencyMod = frequencyMod;
+    }
+
+    public static double getMeanderFrequency() {
+        return meanderFrequency;
+    }
+
+    public static void setMeanderFrequency(double meanderFrequency) {
+        Options.meanderFrequency = meanderFrequency;
+    }
+
+    public static int getDefaultMaxX() {
+        return defaultMaxX;
+    }
+
+    public static void setDefaultMaxX(int defaultMaxX) {
+        Options.defaultMaxX = defaultMaxX;
+    }
+
+    public static int getDefaultAmountOfPointsForUnitSegment() {
+        return defaultAmountOfPointsForUnitSegment;
+    }
+
+    public static void setDefaultAmountOfPointsForUnitSegment(int defaultAmountOfPointsForUnitSegment) {
+        Options.defaultAmountOfPointsForUnitSegment = defaultAmountOfPointsForUnitSegment;
     }
 }
