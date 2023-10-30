@@ -4,13 +4,13 @@ public class Options {
     private static int amplitudeBase = 1;
     private static int amplitudeMod = 2;
 
-    private static int frequencyBase = 4;
-    private static int frequencyMod = 8;
+    private static int frequencyBase = 10;
+    private static int frequencyMod = 10;
 
-    private static double meanderFrequency = 6;
+    private static int meanderFrequency = 2;
 
-    private static int defaultMaxX = 5;
-    private static int defaultAmountOfPointsForUnitSegment = 200;
+    private static double defaultMaxX = 3;
+    private static int defaultAmountOfPointsForUnitSegment = 70;
 
     //фаза
 
@@ -47,19 +47,11 @@ public class Options {
         Options.frequencyMod = frequencyMod;
     }
 
-    public static double getMeanderFrequency() {
-        return meanderFrequency;
-    }
-
-    public static void setMeanderFrequency(double meanderFrequency) {
-        Options.meanderFrequency = meanderFrequency;
-    }
-
-    public static int getDefaultMaxX() {
+    public static double getDefaultMaxX() {
         return defaultMaxX;
     }
 
-    public static void setDefaultMaxX(int defaultMaxX) {
+    public static void setDefaultMaxX(double defaultMaxX) {
         Options.defaultMaxX = defaultMaxX;
     }
 
@@ -69,5 +61,13 @@ public class Options {
 
     public static void setDefaultAmountOfPointsForUnitSegment(int defaultAmountOfPointsForUnitSegment) {
         Options.defaultAmountOfPointsForUnitSegment = defaultAmountOfPointsForUnitSegment;
+    }
+
+    public static int getMeanderFrequency() {
+        return meanderFrequency;
+    }
+
+    public static void setMeanderFrequency(int meanderFrequency) {
+        Options.meanderFrequency = meanderFrequency;
     }
 }
