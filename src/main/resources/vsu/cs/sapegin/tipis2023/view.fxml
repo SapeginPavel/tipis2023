@@ -144,7 +144,7 @@
                       <RowConstraints />
                     </rowConstraints>
                      <children>
-                        <RadioButton fx:id="radioButtonSampleRate64_2_atta" mnemonicParsing="false" text="64" GridPane.columnIndex="1">
+                        <RadioButton fx:id="radioButtonSampleRate64_2_atta" mnemonicParsing="false" selected="true" text="64" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -163,7 +163,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
                         </RadioButton>
-                        <RadioButton fx:id="radioButtonSampleRate128_2_atta" mnemonicParsing="false" selected="true" text="128" toggleGroup="$toggleGroupSampleRate_2_atta" GridPane.rowIndex="1">
+                        <RadioButton fx:id="radioButtonSampleRate128_2_atta" mnemonicParsing="false" text="128" toggleGroup="$toggleGroupSampleRate_2_atta" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>

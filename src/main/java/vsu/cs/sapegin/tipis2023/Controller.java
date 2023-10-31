@@ -1,20 +1,19 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
 import vsu.cs.sapegin.tipis2023.dft.DFT;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
 import vsu.cs.sapegin.tipis2023.utils.Utils;
@@ -93,12 +92,6 @@ public class Controller {
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
         buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
-//        lchOrigSignal_2_atta.getData().add(SeriesGenerator.getSeries(pointsOrig));
-//        lchAmplitudeModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsAmplMod));
-//        lchFrequencyModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsFreqMod));
-//        lchPhaseModulation_2_atta.getData().add(SeriesGenerator.getSeries(pointsPhaseMod));
-
-
         Point2D[] pointsOrigRange = generatePointsFromDFT(pointsOrig);
         Point2D[] pointsAmplModRange = generatePointsFromDFT(pointsAmplMod);
         Point2D[] pointsFreqModRange = generatePointsFromDFT(pointsFreqMod);
@@ -109,6 +102,7 @@ public class Controller {
         buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
         buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
+        tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
     }
 
     private Point2D[] generatePointsFromDFT(Point2D[] points) {
@@ -130,10 +124,38 @@ public class Controller {
         lch.getData().add(SeriesGenerator.getSeries(points));
     }
 
+    //отмечает пики только для целых значений
+    private void tickPeaksForRange(boolean tick) {
+        for (LineChart lch : lineChartsRange_2_atta) {
+            if (tick) {
+                lch.setCreateSymbols(true);
+            } else {
+                lch.setCreateSymbols(false);
+                continue;
+            }
+            int amount = lch.getData().size();
+            for (int i = 0; i < amount; i++) {
+                ObservableList<XYChart.Data> dataList = ((XYChart.Series) lch.getData().get(i)).getData();
+                dataList.get(0).getNode().setVisible(false);
+                dataList.get(dataList.size() - 1).getNode().setVisible(false);
+                for (int j = 1; j < dataList.size() - 1; j++) {
+                    double current = (Double) dataList.get(j).getYValue();
+                    double prev = (Double) dataList.get(j - 1).getYValue();
+                    double next = (Double) dataList.get(j + 1).getYValue();
+                    Node node = dataList.get(j).getNode();
+                    if (current > prev && current > next && current > 0.001) {
+                        Tooltip tooltip = new Tooltip("x = " + dataList.get(j).getXValue());
+                        Tooltip.install(node, tooltip);
+                    } else {
+                        node.setVisible(false);
+                    }
+                }
+            }
+        }
+    }
+
     @FXML
     void onClickReset_2_atta(ActionEvent event) {
-//        EventHandler.resetLineCharts(lineCharts_2_atta);
-//        EventHandler.resetLineCharts(lineChartsRange_2_atta);
         for (LineChart l : lineCharts_2_atta) {
             l.getData().clear();
         }
@@ -169,12 +191,10 @@ public class Controller {
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldValue, Toggle newValue) {
                 RadioButton rb = (RadioButton) newValue;
                 sampleRate = Integer.parseInt(rb.getText());
-                System.out.println("sampleRate = " + sampleRate);
             }
         });
 
         RadioButton rb = (RadioButton) toggleGroupSampleRate_2_atta.getSelectedToggle();
         sampleRate = Integer.parseInt(rb.getText());
-        System.out.println("sampleRate = " + sampleRate);
     }
 }
