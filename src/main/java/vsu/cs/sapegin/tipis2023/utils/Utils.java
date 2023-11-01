@@ -19,4 +19,16 @@ public class Utils {
         }
         return p;
     }
+
+    public static int getIndexOfMaxValueY(Point2D[] points) {
+        int index = 0;
+        double max = 0;
+        for (int i = 0; i < points.length; i++) {
+            if (points[i].getY() > max) {
+                max = points[i].getY();
+                index = i;
+            }
+        }
+        return index;
+    }
 }

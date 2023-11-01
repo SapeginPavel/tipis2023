@@ -1,10 +1,15 @@
 package vsu.cs.sapegin.tipis2023.dft;
 
+import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DFT {
 
     public static double[] dft(double[] yArrInput, int sampleRate) {
 
-        Complex[] yArrOutput = new Complex[sampleRate / 2];
+        Complex[] yArrOutput = new Complex[(sampleRate + 1) / 2];
         for (int k = 0; k < yArrOutput.length; k++) {
             yArrOutput[k] = new Complex();
             for (int n = 0; n < yArrInput.length; n++) {

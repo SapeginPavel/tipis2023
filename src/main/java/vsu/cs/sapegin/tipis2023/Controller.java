@@ -16,6 +16,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import vsu.cs.sapegin.tipis2023.dft.DFT;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
+import vsu.cs.sapegin.tipis2023.second_atta.SecondAttaActions;
 import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 public class Controller {
@@ -80,7 +81,7 @@ public class Controller {
     private ToggleGroup tickPeaks_2_atta;
 
     @FXML
-    void onClickBuild_2_atta(ActionEvent event) {
+    void onClickBuild_2_atta(ActionEvent event) throws Exception {
         Point2D[] pointsOrig = SinusGenerator.getPointsForDefaultSinus();
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         Point2D[] pointsFreqMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
@@ -101,6 +102,13 @@ public class Controller {
         buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
         buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
         buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
+
+        lchPhaseModulationRange_2_atta.getData().clear();
+//        buildGraphic(lchPhaseModulationRange_2_atta, SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2));
+        buildGraphic(lchPhaseModulationRange_2_atta, SecondAttaActions.generateSignalFromFrequenciesArr(SecondAttaActions.getCarrierFrequencies(SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2)), Options.getDefaultAmountOfPointsForUnitSegment(), Options.getDefaultMaxX()));
+
+
+
 
         tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
     }
