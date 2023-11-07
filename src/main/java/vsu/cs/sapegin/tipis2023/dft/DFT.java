@@ -1,20 +1,14 @@
 package vsu.cs.sapegin.tipis2023.dft;
 
-import javafx.geometry.Point2D;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
-import vsu.cs.sapegin.tipis2023.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 public class DFT {
 
     public static double[] dft(double[] yArrInput, int sampleRate) {
 
         Complex[] yArrOutput = new Complex[(sampleRate + 1) / 2];
-//        System.out.println("dft length arr = " + yArrOutput.length);
         for (int k = 0; k < yArrOutput.length; k++) {
             yArrOutput[k] = new Complex();
             for (int n = 0; n < yArrInput.length; n++) {
@@ -28,8 +22,6 @@ public class DFT {
         for (int i = 0; i < resArr.length; i++) {
             resArr[i] = Math.sqrt(yArrOutput[i].real * yArrOutput[i].real + yArrOutput[i].im * yArrOutput[i].im) / 1000;
         }
-//        System.out.println("resArr: ");
-//        System.out.println(Arrays.toString(resArr));
         return resArr;
     }
 
@@ -37,7 +29,6 @@ public class DFT {
         //ОГРАНИЧЕНИЕ на максимальную частоту (задаётся в Options):
         int sizeCof = Math.min(sampleRate / 2, Options.getMaxFrequencyForDFT());
         Complex[] yArrOutput = new Complex[(int) (sizeCof / step)]; //(sampleRate + 1) / 2
-//        System.out.println("dft2 length arr = " + yArrOutput.length);
         double kk = 0;
         for (int k = 0; k < yArrOutput.length; k++) {
             yArrOutput[k] = new Complex();
@@ -53,8 +44,6 @@ public class DFT {
         for (int i = 0; i < resArr.length; i++) {
             resArr[i] = Math.sqrt(yArrOutput[i].real * yArrOutput[i].real + yArrOutput[i].im * yArrOutput[i].im);
         }
-//        System.out.println("resArr dft2 : ");
-//        System.out.println(Arrays.toString(resArr));
         return resArr;
     }
 
@@ -77,8 +66,6 @@ public class DFT {
         for (int i = 0; i < resArr.length; i++) {
             resArr[i] = Math.sqrt(yArrOutput[i].im * yArrOutput[i].im); //yArrOutput[i].real * yArrOutput[i].real + yArrOutput[i].im * yArrOutput[i].im
         }
-//        System.out.println("resArr idft2 : ");
-//        System.out.println(Arrays.toString(resArr));
         return resArr;
     }
 
@@ -100,19 +87,15 @@ public class DFT {
         return yArrOutput;
     }
 
-//    public static Complex[] myDFT(double[] y, int sampleRate) { //frequencies
-//
-//    }
-
-    public static Complex[] myFFT(double[] y, int sampleRate) {
+    public static Complex[] fft(double[] y, int sampleRate) {
         Complex[] complexes = new Complex[y.length];
         for (int i = 0; i < complexes.length; i++) {
             complexes[i] = new Complex(y[i], 0);
         }
-        return myFFT(complexes, sampleRate);
+        return Arrays.copyOfRange(fft(complexes, sampleRate), 0, sampleRate / 2);
     }
 
-        public static Complex[] myFFT(Complex[] x, int sampleRate) {
+    private static Complex[] fft(Complex[] x, int sampleRate) {
         int N = x.length;
         if (N == 1) {
             return x;
@@ -125,8 +108,8 @@ public class DFT {
             xOdd[k] = x[2 * k + 1];
         }
 
-        Complex[] XEven = myFFT(xEven, sampleRate);
-        Complex[] XOdd = myFFT(xOdd, sampleRate);
+        Complex[] XEven = fft(xEven, sampleRate);
+        Complex[] XOdd = fft(xOdd, sampleRate);
 
         Complex[] X = new Complex[N];
 

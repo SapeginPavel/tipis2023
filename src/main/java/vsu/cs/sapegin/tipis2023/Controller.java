@@ -1,7 +1,6 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,7 +17,6 @@ import javafx.scene.control.*;
 import vsu.cs.sapegin.tipis2023.dft.Complex;
 import vsu.cs.sapegin.tipis2023.dft.DFT;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
-import vsu.cs.sapegin.tipis2023.second_atta.SecondAttaActions;
 import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 public class Controller {
@@ -138,11 +136,11 @@ public class Controller {
 //        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
         double[] y = new double[256]; // pointsOrig.length тут будет y[] обрезанного спектра
         for (int i = 0; i < y.length; i++) {
-            y[i] = pointsFreqMod[i].getY();
+            y[i] = pointsOrig[i].getY();
         }
 
 //        System.out.println("Size of y: " + y.length);
-        Complex[] myFFT = DFT.myFFT(y, sampleRate);
+        Complex[] myFFT = DFT.fft(y, sampleRate);
         double[] modules = DFT.getModules(myFFT);
         Point2D[] resPoints = Utils.getPointsForArrY(modules, 1);
         buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
