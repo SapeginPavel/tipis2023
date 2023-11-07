@@ -6,7 +6,7 @@ public class Options {
     private static int amplitudeBase = 1;
     private static int amplitudeMod = 2;
 
-    private static int frequencyBase = 50; //8
+    private static int frequencyBase = 8; //8
     private static int frequencyMod = 14;
 
     private static int meanderFrequency = 1;

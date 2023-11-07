@@ -85,14 +85,15 @@ public class Controller {
         Point2D[] pointsOrig = SinusGenerator.getPointsForDefaultSinus();
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         Point2D[] pointsFreqMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
-//        Point2D[] pointsPhaseMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX());
+        Point2D[] pointsPhaseMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         //самый показательный пример - когда частота равна 2
 
         buildGraphic(lchOrigSignal_2_atta, pointsOrig);
         buildGraphic(lchAmplitudeModulation_2_atta, pointsAmplMod);
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
-//        buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
+        buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
+        //todo: меняем
         Point2D[] pointsOrigRange = generatePointsFromDFT2(pointsOrig, 1);
         Point2D[] pointsAmplModRange = generatePointsFromDFT2(pointsAmplMod, 1);
         Point2D[] pointsFreqModRange = generatePointsFromDFT2(pointsFreqMod, 1);
@@ -136,12 +137,17 @@ public class Controller {
 //        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
         double[] y = new double[256]; // pointsOrig.length тут будет y[] обрезанного спектра
         for (int i = 0; i < y.length; i++) {
-            y[i] = pointsOrig[i].getY();
+            y[i] = pointsAmplMod[i].getY();
         }
 
 //        System.out.println("Size of y: " + y.length);
         Complex[] myFFT = DFT.fft(y, sampleRate);
-        double[] modules = DFT.getModules(myFFT);
+        Complex[] myIFFT = DFT.ifft(myFFT);
+        double[] modules = new double[myIFFT.length];
+        for (int i = 0; i < modules.length; i++) {
+            modules[i] = myIFFT[i].real;
+        }
+//        double[] modules = DFT.getModules(myIFFT);
         Point2D[] resPoints = Utils.getPointsForArrY(modules, 1);
         buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
 

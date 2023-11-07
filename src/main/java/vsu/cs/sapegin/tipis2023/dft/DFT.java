@@ -116,11 +116,44 @@ public class DFT {
         for (int k = 0; k < N / 2; k++) {
             double cof = -2 * Math.PI * k / N;
             Complex complex = new Complex(Math.cos(cof), Math.sin(cof));
-//            System.out.println("Size of x: " + X.length);
             X[k] = XEven[k].plus(XOdd[k].multiply(complex));
             X[k + N / 2] = XEven[k].minus(XOdd[k].multiply(complex));
         }
         return X;
+    }
+
+    public static Complex[] ifft(double[] y, int sampleRate) {
+        Complex[] complexes = new Complex[y.length];
+        for (int i = 0; i < complexes.length; i++) {
+            complexes[i] = new Complex(y[i], 0);
+        }
+        return ifft(complexes);
+    }
+
+    public static Complex[] ifft(Complex[] X) {
+        int N = X.length;
+        if (N == 1) {
+            return X;
+        }
+
+        Complex[] XEven = new Complex[N / 2];
+        Complex[] XOdd = new Complex[N / 2];
+        for (int k = 0; k < N / 2; k++) {
+            XEven[k] = X[2 * k];
+            XOdd[k] = X[2 * k + 1];
+        }
+
+        Complex[] xEven = ifft(XEven);
+        Complex[] xOdd = ifft(XOdd);
+
+        Complex[] x = new Complex[N];
+        for (int k = 0; k < N / 2; k++) {
+            double cof = 2 * Math.PI * k / N;
+            Complex complex = new Complex(Math.cos(cof), Math.sin(cof));
+            x[k] = xEven[k].plus(xOdd[k].multiply(complex));
+            x[k + N / 2] = xEven[k].minus(xOdd[k].multiply(complex));
+        }
+        return x;
     }
 
 
