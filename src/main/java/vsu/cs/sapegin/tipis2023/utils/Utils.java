@@ -33,9 +33,9 @@ public class Utils {
         return index;
     }
 
-    public static Point2D[] getPointsForArrY(double[] y, double step) {
+    public static Point2D[] generatePointsWithStepForY(double[] y, double from, double step) {
         Point2D[] points = new Point2D[y.length];
-        double x = 0;
+        double x = from;
         for (int i = 0; i < points.length; i++) {
             points[i] = new Point2D(x, y[i]);
             x += step;

@@ -122,6 +122,10 @@ public class DFT {
         return X;
     }
 
+    public static double[] getModulesAfterFFT(Complex[] complexesAfterFFT) {
+        return getModules(complexesAfterFFT);
+    }
+
     public static Complex[] ifft(double[] y, int sampleRate) {
         Complex[] complexes = new Complex[y.length];
         for (int i = 0; i < complexes.length; i++) {

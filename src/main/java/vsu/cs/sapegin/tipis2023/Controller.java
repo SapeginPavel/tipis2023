@@ -94,10 +94,10 @@ public class Controller {
         buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
         //todo: меняем
-        Point2D[] pointsOrigRange = generatePointsFromDFT2(pointsOrig, 1);
-        Point2D[] pointsAmplModRange = generatePointsFromDFT2(pointsAmplMod, 1);
-        Point2D[] pointsFreqModRange = generatePointsFromDFT2(pointsFreqMod, 1);
-//        Point2D[] pointsPhaseModRange = generatePointsFromDFT(pointsPhaseMod, 1);
+        Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, 1);
+        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, 1);
+        Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, 1);
+        Point2D[] pointsPhaseModRange = generatePointsFromFFT(pointsPhaseMod, 1);
 
         buildGraphic(lchOrigSignalRange_2_atta, pointsOrigRange);
         buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
@@ -148,7 +148,7 @@ public class Controller {
             modules[i] = myIFFT[i].real;
         }
 //        double[] modules = DFT.getModules(myIFFT);
-        Point2D[] resPoints = Utils.getPointsForArrY(modules, 1);
+        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
         buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
 
 
@@ -176,32 +176,60 @@ public class Controller {
         tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
     }
 
-    private Point2D[] generatePointsFromDFT(Point2D[] points) {
-        Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
+    private Point2D[] generatePointsFromFFT(Point2D[] points, double step) {
+        Point2D[] pointsByStep = getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate); //выбираем с каким-то шагом точки из основных точек
 
-        double[] y = new double[pointsByStep.length];
-        for (int i = 0; i < y.length; i++) {
-            y[i] = pointsByStep[i].getY();
-        }
-        double[] dftY = DFT.dft(y, sampleRate);
-        Point2D[] resPoints = new Point2D[dftY.length];
-        for (int i = 0; i < resPoints.length; i++) {
-            resPoints[i] = new Point2D(i, dftY[i]);
-        }
-        return resPoints;
+        double[] y = getFromPointsY(pointsByStep);
+
+        double[] afterFFT = doFFT(y);
+
+        return Utils.generatePointsWithStepForY(afterFFT, 0, step);
     }
 
-    private Point2D[] generatePointsFromDFT2(Point2D[] points, double step) {
-        Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
-
-        double[] y = new double[pointsByStep.length];
-        for (int i = 0; i < y.length; i++) {
-            y[i] = pointsByStep[i].getY();
-        }
-        double[] dft2Y = DFT.dft2(y, sampleRate, step);
-        Point2D[] resPoints = Utils.getPointsForArrY(dft2Y, step);
-        return resPoints;
+    private Point2D[] getPointsByStep(Point2D[] points, int step) {
+        return Utils.getPointsByStep(points, step);
     }
+
+    private double[] getFromPointsY(Point2D[] points) {
+        double[] y = new double[points.length];
+        for (int i = 0; i < y.length; i++) {
+            y[i] = points[i].getY();
+        }
+        return y;
+    }
+
+    private double[] doFFT(double[] y) {
+        double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
+        return DFT.getModulesAfterFFT(DFT.fft(yRequiredSize, sampleRate));
+    }
+
+    private double[] getArrayPaddedToRequiredSize(double[] y) {
+        int size = getMinNecessarySizeOfArrayForFFT(y);
+        if (size > y.length) {
+            double[] newY = new double[size];
+            for (int i = 0; i < y.length; i++) {
+                newY[i] = y[i];
+            }
+            return newY;
+        } else {
+            return y;
+        }
+    }
+
+    private int getMinNecessarySizeOfArrayForFFT(double[] y) {
+        int n = y.length;
+        int size = 1;
+        while (true) {
+            if (n > size) {
+                size *= 2;
+            } else {
+                break;
+            }
+        }
+        return size;
+    }
+
+
 
     private void buildGraphic(LineChart lch, Point2D[] points) {
         lch.getData().add(SeriesGenerator.getSeries(points));
