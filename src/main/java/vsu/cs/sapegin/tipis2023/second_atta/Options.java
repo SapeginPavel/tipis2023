@@ -1,6 +1,8 @@
 package vsu.cs.sapegin.tipis2023.second_atta;
 
 public class Options {
+
+    //ощущение, что моё обратное преобразование фурье не работает
     private static int amplitudeBase = 1;
     private static int amplitudeMod = 2;
 
@@ -12,6 +14,8 @@ public class Options {
     private static double defaultMinX = 0;
     private static double defaultMaxX = 3;
     private static int defaultAmountOfPointsForUnitSegment = 256;
+
+    private static int maxFrequencyForDFT = 30;
 
     //фаза
 
@@ -78,5 +82,13 @@ public class Options {
 
     public static void setMeanderFrequency(int meanderFrequency) {
         Options.meanderFrequency = meanderFrequency;
+    }
+
+    public static int getMaxFrequencyForDFT() {
+        return maxFrequencyForDFT;
+    }
+
+    public static void setMaxFrequencyForDFT(int maxFrequencyForDFT) {
+        Options.maxFrequencyForDFT = maxFrequencyForDFT;
     }
 }

@@ -1,6 +1,7 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -14,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import vsu.cs.sapegin.tipis2023.dft.Complex;
 import vsu.cs.sapegin.tipis2023.dft.DFT;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
 import vsu.cs.sapegin.tipis2023.second_atta.SecondAttaActions;
@@ -85,27 +87,84 @@ public class Controller {
         Point2D[] pointsOrig = SinusGenerator.getPointsForDefaultSinus();
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         Point2D[] pointsFreqMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyMod(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
-        Point2D[] pointsPhaseMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX());
+//        Point2D[] pointsPhaseMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeBase(), true, Options.getMeanderFrequency(), Options.getDefaultMaxX());
         //самый показательный пример - когда частота равна 2
 
         buildGraphic(lchOrigSignal_2_atta, pointsOrig);
         buildGraphic(lchAmplitudeModulation_2_atta, pointsAmplMod);
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
-        buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
+//        buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
-        Point2D[] pointsOrigRange = generatePointsFromDFT(pointsOrig);
-        Point2D[] pointsAmplModRange = generatePointsFromDFT(pointsAmplMod);
-        Point2D[] pointsFreqModRange = generatePointsFromDFT(pointsFreqMod);
-        Point2D[] pointsPhaseModRange = generatePointsFromDFT(pointsPhaseMod);
+        Point2D[] pointsOrigRange = generatePointsFromDFT2(pointsOrig, 1);
+        Point2D[] pointsAmplModRange = generatePointsFromDFT2(pointsAmplMod, 1);
+        Point2D[] pointsFreqModRange = generatePointsFromDFT2(pointsFreqMod, 1);
+//        Point2D[] pointsPhaseModRange = generatePointsFromDFT(pointsPhaseMod, 1);
 
         buildGraphic(lchOrigSignalRange_2_atta, pointsOrigRange);
         buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
         buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
-        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
+//        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
+
+
+
+
+//        Point2D[] pointsByStep = Utils.getPointsByStep(pointsAmplMod, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
+//
+//        double[] y = new double[pointsByStep.length];
+//        for (int i = 0; i < y.length; i++) {
+//            y[i] = pointsByStep[i].getY();
+//        }
+
+//        double[] yDFT2 = DFT.dft2(y, sampleRate, 0.2);
+
+//        Point2D[] pointsDFT2 = Utils.getPointsForArrY(yDFT2, 0.2);
+//        Point2D[] resPoints = new Point2D[yDFT2.length];
+//        for (int i = 0; i < resPoints.length; i++) {
+//            resPoints[i] = new Point2D(i, yDFT2[i]);
+//        }
+
+
 
         lchPhaseModulationRange_2_atta.getData().clear();
-//        buildGraphic(lchPhaseModulationRange_2_atta, SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2));
-        buildGraphic(lchPhaseModulationRange_2_atta, SecondAttaActions.generateSignalFromFrequenciesArr(SecondAttaActions.getCarrierFrequencies(SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2)), Options.getDefaultAmountOfPointsForUnitSegment(), Options.getDefaultMaxX()));
+
+//        double[] test = {1, 43, 53, 55, 7, 3, 643, 362, 6543, 555};
+//        System.out.println(Arrays.toString(Utils.getEvenElements(test)));
+//        System.out.println(Arrays.toString(Utils.getOddElements(test)));
+
+
+
+        //Тестирую fft
+
+//        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
+        double[] y = new double[256]; // pointsOrig.length тут будет y[] обрезанного спектра
+        for (int i = 0; i < y.length; i++) {
+            y[i] = pointsFreqMod[i].getY();
+        }
+
+//        System.out.println("Size of y: " + y.length);
+        Complex[] myFFT = DFT.myFFT(y, sampleRate);
+        double[] modules = DFT.getModules(myFFT);
+        Point2D[] resPoints = Utils.getPointsForArrY(modules, 1);
+        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
+
+
+
+
+        //ВАЖНЫЙ РАБОЧИЙ КОД:
+//        double step = 0.5;
+//        double[] iy = DFT.idft2(y, sampleRate, 30, step); //Options.getDefaultMaxX(), 0.1
+//        Point2D[] resPoints = Utils.getPointsForArrY(iy, step);
+//        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
+
+//        double[] iy = DFT.idft22(DFT.dft22(y, sampleRate, 1), sampleRate, 30, 0.1); //сюда мы его передаём
+//        Point2D[] resPoints = Utils.getPointsForArrY(iy, 0.1);
+//        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
+
+//        buildGraphic(lchPhaseModulationRange_2_atta, SecondAttaActions.generateSignalFromFrequenciesArr(SecondAttaActions.getCarrierFrequencies(SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2)), Options.getDefaultAmountOfPointsForUnitSegment(), Options.getDefaultMaxX()));
+
+//        Point2D[] pointsPhaseModRange = generatePointsFromDFT2(pointsAmplMod, 0.125); //0.05
+//        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
+
 
 
 
@@ -125,6 +184,18 @@ public class Controller {
         for (int i = 0; i < resPoints.length; i++) {
             resPoints[i] = new Point2D(i, dftY[i]);
         }
+        return resPoints;
+    }
+
+    private Point2D[] generatePointsFromDFT2(Point2D[] points, double step) {
+        Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
+
+        double[] y = new double[pointsByStep.length];
+        for (int i = 0; i < y.length; i++) {
+            y[i] = pointsByStep[i].getY();
+        }
+        double[] dft2Y = DFT.dft2(y, sampleRate, step);
+        Point2D[] resPoints = Utils.getPointsForArrY(dft2Y, step);
         return resPoints;
     }
 
