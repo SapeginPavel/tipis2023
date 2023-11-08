@@ -142,7 +142,7 @@ public class Controller {
 
 //        System.out.println("Size of y: " + y.length);
         Complex[] myFFT = DFT.fft(y, sampleRate);
-        Complex[] myIFFT = DFT.ifft(myFFT);
+        Complex[] myIFFT = DFT.ifft(myFFT, sampleRate);
         double[] modules = new double[myIFFT.length];
         for (int i = 0; i < modules.length; i++) {
             modules[i] = myIFFT[i].real;
