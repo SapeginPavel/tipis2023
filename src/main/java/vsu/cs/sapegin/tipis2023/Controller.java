@@ -93,7 +93,6 @@ public class Controller {
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
         buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
-        //todo: меняем
         Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, 1);
         Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, 1);
         Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, 1);
@@ -102,72 +101,28 @@ public class Controller {
         buildGraphic(lchOrigSignalRange_2_atta, pointsOrigRange);
         buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
         buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
-//        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
-
-
-
-
-//        Point2D[] pointsByStep = Utils.getPointsByStep(pointsAmplMod, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
-//
-//        double[] y = new double[pointsByStep.length];
-//        for (int i = 0; i < y.length; i++) {
-//            y[i] = pointsByStep[i].getY();
-//        }
-
-//        double[] yDFT2 = DFT.dft2(y, sampleRate, 0.2);
-
-//        Point2D[] pointsDFT2 = Utils.getPointsForArrY(yDFT2, 0.2);
-//        Point2D[] resPoints = new Point2D[yDFT2.length];
-//        for (int i = 0; i < resPoints.length; i++) {
-//            resPoints[i] = new Point2D(i, yDFT2[i]);
-//        }
-
-
-
-        lchPhaseModulationRange_2_atta.getData().clear();
-
-//        double[] test = {1, 43, 53, 55, 7, 3, 643, 362, 6543, 555};
-//        System.out.println(Arrays.toString(Utils.getEvenElements(test)));
-//        System.out.println(Arrays.toString(Utils.getOddElements(test)));
-
-
+        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
         //Тестирую fft
 
+        lchPhaseModulationRange_2_atta.getData().clear();
+
 //        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
-        double[] y = new double[256]; // pointsOrig.length тут будет y[] обрезанного спектра
+        double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
         for (int i = 0; i < y.length; i++) {
             y[i] = pointsAmplMod[i].getY();
         }
 
-//        System.out.println("Size of y: " + y.length);
-        Complex[] myFFT = DFT.fft(y, sampleRate);
-        Complex[] myIFFT = DFT.ifft(myFFT, sampleRate);
-        double[] modules = new double[myIFFT.length];
-        for (int i = 0; i < modules.length; i++) {
-            modules[i] = myIFFT[i].real;
-        }
-//        double[] modules = DFT.getModules(myIFFT);
-        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
-        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
-
-
-
-
-        //ВАЖНЫЙ РАБОЧИЙ КОД:
-//        double step = 0.5;
-//        double[] iy = DFT.idft2(y, sampleRate, 30, step); //Options.getDefaultMaxX(), 0.1
-//        Point2D[] resPoints = Utils.getPointsForArrY(iy, step);
+//        System.out.println("Size of pointsAmplMod: " + pointsAmplMod.length); //todo
+//        Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y), sampleRate);
+//        Complex[] myIFFT = DFT.ifft(myFFT, sampleRate);
+//        double[] modules = new double[myIFFT.length];
+//        for (int i = 0; i < modules.length; i++) {
+//            modules[i] = myIFFT[i].real;
+//        }
+////        double[] modules = DFT.getModules(myIFFT);
+//        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
 //        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
-
-//        double[] iy = DFT.idft22(DFT.dft22(y, sampleRate, 1), sampleRate, 30, 0.1); //сюда мы его передаём
-//        Point2D[] resPoints = Utils.getPointsForArrY(iy, 0.1);
-//        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
-
-//        buildGraphic(lchPhaseModulationRange_2_atta, SecondAttaActions.generateSignalFromFrequenciesArr(SecondAttaActions.getCarrierFrequencies(SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2)), Options.getDefaultAmountOfPointsForUnitSegment(), Options.getDefaultMaxX()));
-
-//        Point2D[] pointsPhaseModRange = generatePointsFromDFT2(pointsAmplMod, 0.125); //0.05
-//        buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
 
 
@@ -228,8 +183,6 @@ public class Controller {
         }
         return size;
     }
-
-
 
     private void buildGraphic(LineChart lch, Point2D[] points) {
         lch.getData().add(SeriesGenerator.getSeries(points));

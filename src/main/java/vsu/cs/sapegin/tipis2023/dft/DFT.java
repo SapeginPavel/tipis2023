@@ -41,7 +41,7 @@ public class DFT {
     }
 
     private static Complex[] generalFourierTransform(Complex[] x, int sampleRate, boolean inverse) {
-        int N = x.length;
+        int N = sampleRate; //x.length
         if (N == 1) {
             return x;
         }
@@ -53,8 +53,8 @@ public class DFT {
             xOdd[k] = x[2 * k + 1];
         }
 
-        Complex[] XEven = generalFourierTransform(xEven, sampleRate, inverse);
-        Complex[] XOdd = generalFourierTransform(xOdd, sampleRate, inverse);
+        Complex[] XEven = generalFourierTransform(xEven, N / 2, inverse);
+        Complex[] XOdd = generalFourierTransform(xOdd, N / 2, inverse);
 
         Complex[] X = new Complex[N];
         for (int k = 0; k < N / 2; k++) {
