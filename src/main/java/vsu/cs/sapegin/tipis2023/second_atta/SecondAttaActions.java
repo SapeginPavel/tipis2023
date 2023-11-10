@@ -5,24 +5,23 @@ import vsu.cs.sapegin.tipis2023.SinusGenerator;
 import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SecondAttaActions {
 
     public static Point2D[] cutOffTheSpectrum(Point2D[] points, int range) throws Exception {
         int indexOfPeak = Utils.getIndexOfMaxValueY(points);
-        if ((indexOfPeak - range) < 0 || (indexOfPeak + range) >= points.length) {
+        if ((points[indexOfPeak].getX() - range) < 0 || (points[indexOfPeak].getX() + range) >= points.length) {
             throw new Exception("Invalid range for cutting of the spectrum");
         }
-        Point2D[] cutPoints = new Point2D[points.length];
-        for (int i = 0; i < cutPoints.length; i++) {
-            if (i >= (indexOfPeak - range) && i <= (indexOfPeak + range)) {
-                cutPoints[i] = points[i];
-            } else {
-                cutPoints[i] = new Point2D(i, 0);
+        List<Point2D> cutPoints = new ArrayList<>();
+        for (int i = 0; i < points.length; i++) {
+            if (points[i].getX() >= (points[indexOfPeak].getX() - range) && points[i].getX() <= (points[indexOfPeak].getX() + range)) {
+                cutPoints.add(points[i]);
             }
         }
-        return cutPoints;
+        return cutPoints.toArray(new Point2D[0]);
     }
 
     public static int[] getCarrierFrequencies(Point2D[] points) {

@@ -1,6 +1,7 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,6 +19,7 @@ import javafx.scene.control.*;
 import vsu.cs.sapegin.tipis2023.dft.Complex;
 import vsu.cs.sapegin.tipis2023.dft.DFT;
 import vsu.cs.sapegin.tipis2023.second_atta.Options;
+import vsu.cs.sapegin.tipis2023.second_atta.SecondAttaActions;
 import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 public class Controller {
@@ -119,6 +121,8 @@ public class Controller {
 
         lchPhaseModulationRange_2_atta.getData().clear();
 
+
+
 //        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
         double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
         for (int i = 0; i < y.length; i++) {
@@ -136,6 +140,20 @@ public class Controller {
         buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
 
         tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
+    }
+
+    @FXML
+    void onExecuteTask_2_atta(ActionEvent event) throws Exception {
+        ObservableList<XYChart.Data> dataList = ((XYChart.Series) lchAmplitudeModulationRange_2_atta.getData().get(0)).getData();
+        Point2D[] points = new Point2D[dataList.size()];
+        for (int i = 0; i < points.length; i++) {
+            points[i] = new Point2D((Double) dataList.get(i).getXValue(), (Double) dataList.get(i).getYValue());
+        }
+        //получили все точки с графика амплитудной модуляции
+        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(points, 2);
+//        lchCutOffAmplMod_2_atta.getXAxis().setAutoRanging(true); //попытка поменять нижнее значение
+
+        buildGraphic(lchCutOffAmplMod_2_atta, cutOffPoints);
     }
 
     private Point2D[] generatePointsFromFFT(Point2D[] points, int maxFrequencyForRange) {

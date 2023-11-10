@@ -25,9 +25,9 @@
    <children>
       <Pane prefHeight="700.0" prefWidth="1200.0">
          <children>
-            <ScrollPane layoutX="5.0" layoutY="70.0" prefHeight="2000.0" prefWidth="940.0" vmax="3.0">
+            <ScrollPane layoutX="5.0" layoutY="70.0" prefHeight="619.0" prefWidth="940.0" vmax="3.0">
               <content>
-                <AnchorPane layoutX="5.0" layoutY="70.0" minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="940.0">
+                <AnchorPane layoutX="5.0" layoutY="70.0" minHeight="0.0" minWidth="0.0" prefHeight="1374.0" prefWidth="940.0">
                      <children>
                         <VBox prefHeight="600.0" prefWidth="450.0">
                             <children>
@@ -219,7 +219,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <VBox alignment="TOP_CENTER" layoutX="960.0" layoutY="70.0" prefHeight="365.0" prefWidth="210.0">
+            <VBox alignment="TOP_CENTER" layoutX="960.0" layoutY="70.0" prefHeight="493.0" prefWidth="210.0">
                <children>
                   <Label prefHeight="65.0" prefWidth="210.0" text="Частота дискретизации" textAlignment="CENTER" wrapText="true">
                      <font>
@@ -307,7 +307,7 @@
                         </RadioButton>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#onClickBuild_2_atta" text="Построить" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onClickReset_2_atta" text="Сбросить" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -315,12 +315,20 @@
                         <Insets bottom="5.0" left="15.0" right="15.0" top="20.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onClickReset_2_atta" text="Сбросить" textAlignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#onClickBuild_2_atta" text="Построить" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button layoutX="66.0" layoutY="332.0" mnemonicParsing="false" onAction="#onExecuteTask_2_atta" text="Выполнить" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </Button>
                </children>
