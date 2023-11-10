@@ -13,7 +13,6 @@ public class DFT {
             complexes[i] = new Complex(y[i], 0);
         }
         return fft(complexes);
-//        return Arrays.copyOfRange(fft(complexes), 0, complexes.length / 2);
     }
 
     public static Complex[] fft(double[] y, int maxFrequency) {
@@ -21,9 +20,7 @@ public class DFT {
         for (int i = 0; i < complexes.length; i++) {
             complexes[i] = new Complex(y[i], 0);
         }
-        System.out.println("Return from fft: " + maxFrequency);
         return fft(complexes);
-//        return Arrays.copyOfRange(fft(complexes), 0, maxFrequency);
     }
 
     private static Complex[] fft(Complex[] x) {
