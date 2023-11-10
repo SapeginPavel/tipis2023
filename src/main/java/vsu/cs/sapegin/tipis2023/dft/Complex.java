@@ -44,6 +44,6 @@ public class Complex {
     }
 
     public double getModule() {
-        return Math.sqrt(this.real * this.real + this.im + this.im);
+        return Math.sqrt(this.real * this.real + this.im * this.im);
     }
 }

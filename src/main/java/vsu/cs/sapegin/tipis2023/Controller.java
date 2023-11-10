@@ -145,24 +145,43 @@ public class Controller {
     @FXML
     void onExecuteTask_2_atta(ActionEvent event) throws Exception {
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
-        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, Options.getMaxFrequencyForDFT());
+//        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, Options.getMaxFrequencyForDFT());
 
 //        double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
-        double[] y = getFromPointsY(pointsAmplModRange); // 256 pointsOrig.length тут будет y[] обрезанного спектра
+        double[] y = getFromPointsY(pointsAmplMod); // 256 pointsOrig.length тут будет y[] обрезанного спектра
 //        for (int i = 0; i < y.length; i++) {
 //            y[i] = pointsAmplMod[i].getY();
 //        }
 
         Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
+        System.out.println("myFFT : " + myFFT.length);
+        Complex[] myFFTPositiveFrequencies = Arrays.copyOfRange(myFFT, 0, myFFT.length / 2);
+        System.out.println("myFFTPositiveFrequencies : " + myFFTPositiveFrequencies.length);
+        Complex[] cutOffFFT = SecondAttaActions.cutOffTheSpectrum(myFFTPositiveFrequencies);
+        System.out.println("cutOffFFT : " + cutOffFFT.length);
+        Complex[] cutOffGGTRequiredSize = getArrayPaddedToRequiredSize(cutOffFFT);
+        System.out.println("cutOffGGTRequiredSize : " + cutOffGGTRequiredSize.length);
+        Complex[] myIFFT = DFT.ifft(cutOffGGTRequiredSize);
+        System.out.println("myIFFT : " + myIFFT.length);
 
-        Complex[] myIFFT = DFT.ifft(myFFT);
-        double[] modules = new double[myIFFT.length];
-        for (int i = 0; i < modules.length; i++) {
-            modules[i] = myIFFT[i].real;
+        double[] ampls = new double[myFFTPositiveFrequencies.length];
+        for (int i = 0; i < ampls.length; i++) {
+            ampls[i] = myFFTPositiveFrequencies[i].getModule();
         }
 //        double[] modules = DFT.getModules(myIFFT);
-        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
-        buildGraphic(lchReconstructedSignal_2_atta, resPoints);
+        Point2D[] resPoints1 = Utils.generatePointsWithStepForY(ampls, 0,1);
+        buildGraphic(lchReconstructedSignal_2_atta, resPoints1);
+
+//        double[] modules = new double[myIFFT.length];
+//        for (int i = 0; i < modules.length; i++) {
+//            modules[i] = myIFFT[i].real;
+//        }
+//        System.out.println("modules : " + modules.length);
+////        double[] modules = DFT.getModules(myIFFT);
+//        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
+//        buildGraphic(lchReconstructedSignal_2_atta, resPoints);
+
+
 
 //        ObservableList<XYChart.Data> dataList = ((XYChart.Series) lchAmplitudeModulationRange_2_atta.getData().get(0)).getData();
 //        Point2D[] points = new Point2D[dataList.size()];
@@ -238,6 +257,35 @@ public class Controller {
 
     private int getMinNecessarySizeOfArrayForFFT(double[] y) {
         int n = y.length;
+        int size = 1;
+        while (true) {
+            if (n > size) {
+                size *= 2;
+            } else {
+                break;
+            }
+        }
+        return size;
+    }
+
+    private Complex[] getArrayPaddedToRequiredSize(Complex[] complex) {
+        int size = getMinNecessarySizeOfArrayForFFT(complex);
+        if (size > complex.length) {
+            Complex[] newComplex = new Complex[size];
+            for (int i = 0; i < complex.length; i++) {
+                newComplex[i] = complex[i];
+            }
+            for (int i = complex.length; i < size; i++) {
+                newComplex[i] = new Complex();
+            }
+            return newComplex;
+        } else {
+            return complex;
+        }
+    }
+
+    private int getMinNecessarySizeOfArrayForFFT(Complex[] complex) {
+        int n = complex.length;
         int size = 1;
         while (true) {
             if (n > size) {

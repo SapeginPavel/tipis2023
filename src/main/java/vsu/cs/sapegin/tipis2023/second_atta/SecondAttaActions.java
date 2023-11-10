@@ -27,9 +27,19 @@ public class SecondAttaActions {
 
     //todo: проверить работу. Находим пик, потом минимум, потом максимум, потом снова минимум и возвращаем симметричный кусок. По-хорошему надо бы Exception тут кидать после проверок, но ладно
     public static Complex[] cutOffTheSpectrum(Complex[] complex) {
-        int indexOfPeak = Utils.getIndexOfMaxRealPart(complex);
-        int nextMinMaxMin = Utils.getIndexOfNextMinRealPartValue(complex, Utils.getIndexOfNextMaxRealPartValue(complex, Utils.getIndexOfNextMinRealPartValue(complex, indexOfPeak)));
+//        int indexOfPeak = Utils.getIndexOfMaxRealPart(complex);
+//        System.out.println("-- indexOfPeak : " + indexOfPeak);
+//        int nextMinMaxMin = Utils.getIndexOfNextMinRealPartValue(complex, Utils.getIndexOfNextMaxRealPartValue(complex, Utils.getIndexOfNextMinRealPartValue(complex, indexOfPeak)));
+//        System.out.println("-- nextMinMaxMin : " + nextMinMaxMin);
+//        int prevMinMaxMin = indexOfPeak - nextMinMaxMin;
+//        System.out.println("-- prevMinMaxMin : " + prevMinMaxMin);
+
+        int indexOfPeak = Utils.getIndexOfComplexWithMaxModule(complex);
+        System.out.println("-- indexOfPeak : " + indexOfPeak);
+        int nextMinMaxMin = Utils.getIndexOfNextComplexWithMinModule(complex, Utils.getIndexOfNextComplexWithMaxModule(complex, Utils.getIndexOfNextComplexWithMinModule(complex, indexOfPeak)));
+        System.out.println("-- nextMinMaxMin : " + nextMinMaxMin);
         int prevMinMaxMin = indexOfPeak - nextMinMaxMin;
+        System.out.println("-- prevMinMaxMin : " + prevMinMaxMin);
 
         return Arrays.copyOfRange(complex, prevMinMaxMin, nextMinMaxMin);
     }
