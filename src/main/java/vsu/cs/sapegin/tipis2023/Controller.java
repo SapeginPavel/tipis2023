@@ -82,6 +82,18 @@ public class Controller {
     private ToggleGroup tickPeaks_2_atta;
 
     @FXML
+    private LineChart<?, ?> lchHilbertTransform_2_atta;
+
+    @FXML
+    private LineChart<?, ?> lchCutOffAmplMod_2_atta;
+
+    @FXML
+    private LineChart<?, ?> lchReconstructedSignal_2_atta;
+
+    @FXML
+    private LineChart<?, ?> lchModulatingSignal_2_atta;
+
+    @FXML
     void onClickBuild_2_atta(ActionEvent event) throws Exception {
         Point2D[] pointsOrig = SinusGenerator.getPointsForDefaultSinus();
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
@@ -105,8 +117,6 @@ public class Controller {
         buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
         buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
-        //Тестирую fft
-
         lchPhaseModulationRange_2_atta.getData().clear();
 
 //        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
@@ -115,11 +125,8 @@ public class Controller {
             y[i] = pointsAmplMod[i].getY();
         }
 
-//        System.out.println("Size of pointsAmplMod: " + pointsAmplMod.length); //todo
         Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
-//        System.out.println("Size of myFFT = " + myFFT.length);
-//        System.out.println(Arrays.toString(myFFT));
-        Complex[] myIFFT = DFT.ifft(myFFT); //todo: does not work
+        Complex[] myIFFT = DFT.ifft(myFFT);
         double[] modules = new double[myIFFT.length];
         for (int i = 0; i < modules.length; i++) {
             modules[i] = myIFFT[i].real;
@@ -127,10 +134,6 @@ public class Controller {
 //        double[] modules = DFT.getModules(myIFFT);
         Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
         buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
-
-
-
-
 
         tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
     }

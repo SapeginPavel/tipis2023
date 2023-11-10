@@ -23,7 +23,7 @@ public class DFT {
         return fft(complexes);
     }
 
-    private static Complex[] fft(Complex[] x) {
+    public static Complex[] fft(Complex[] x) {
         return generalFourierTransform(x, x.length, false);
     }
 

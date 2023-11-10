@@ -7,6 +7,10 @@ public class Complex {
     public Complex() {
     }
 
+    public Complex(double real) {
+        this.real = real;
+    }
+
     public Complex(double real, double im) {
         this.real = real;
         this.im = im;
