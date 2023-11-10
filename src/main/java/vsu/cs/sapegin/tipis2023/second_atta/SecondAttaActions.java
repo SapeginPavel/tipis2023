@@ -2,6 +2,7 @@ package vsu.cs.sapegin.tipis2023.second_atta;
 
 import javafx.geometry.Point2D;
 import vsu.cs.sapegin.tipis2023.SinusGenerator;
+import vsu.cs.sapegin.tipis2023.dft.Complex;
 import vsu.cs.sapegin.tipis2023.utils.Utils;
 
 import java.util.ArrayList;
@@ -22,6 +23,15 @@ public class SecondAttaActions {
             }
         }
         return cutPoints.toArray(new Point2D[0]);
+    }
+
+    //todo: проверить работу. Находим пик, потом минимум, потом максимум, потом снова минимум и возвращаем симметричный кусок. По-хорошему надо бы Exception тут кидать после проверок, но ладно
+    public static Complex[] cutOffTheSpectrum(Complex[] complex) {
+        int indexOfPeak = Utils.getIndexOfMaxRealPart(complex);
+        int nextMinMaxMin = Utils.getIndexOfNextMinRealPartValue(complex, Utils.getIndexOfNextMaxRealPartValue(complex, Utils.getIndexOfNextMinRealPartValue(complex, indexOfPeak)));
+        int prevMinMaxMin = indexOfPeak - nextMinMaxMin;
+
+        return Arrays.copyOfRange(complex, prevMinMaxMin, nextMinMaxMin);
     }
 
     public static int[] getCarrierFrequencies(Point2D[] points) {

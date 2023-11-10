@@ -1,7 +1,6 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +27,7 @@ public class Controller {
 
     List<LineChart> lineCharts_2_atta = null;
     List<LineChart> lineChartsRange_2_atta = null;
+    List<LineChart> lineChartsTask_2_atta = null;
 
     @FXML
     private ResourceBundle resources;
@@ -119,17 +119,42 @@ public class Controller {
         buildGraphic(lchFrequencyModulationRange_2_atta, pointsFreqModRange);
         buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
-        lchPhaseModulationRange_2_atta.getData().clear();
+//        lchPhaseModulationRange_2_atta.getData().clear();
 
 
 
 //        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(pointsAmplModRange, 2);
-        double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
-        for (int i = 0; i < y.length; i++) {
-            y[i] = pointsAmplMod[i].getY();
-        }
+//        double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
+//        for (int i = 0; i < y.length; i++) {
+//            y[i] = pointsAmplMod[i].getY();
+//        }
+//
+//        Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
+//        Complex[] myIFFT = DFT.ifft(myFFT);
+//        double[] modules = new double[myIFFT.length];
+//        for (int i = 0; i < modules.length; i++) {
+//            modules[i] = myIFFT[i].real;
+//        }
+////        double[] modules = DFT.getModules(myIFFT);
+//        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
+//        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
+
+        tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
+    }
+
+    @FXML
+    void onExecuteTask_2_atta(ActionEvent event) throws Exception {
+        Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
+        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, Options.getMaxFrequencyForDFT());
+
+//        double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
+        double[] y = getFromPointsY(pointsAmplModRange); // 256 pointsOrig.length тут будет y[] обрезанного спектра
+//        for (int i = 0; i < y.length; i++) {
+//            y[i] = pointsAmplMod[i].getY();
+//        }
 
         Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
+
         Complex[] myIFFT = DFT.ifft(myFFT);
         double[] modules = new double[myIFFT.length];
         for (int i = 0; i < modules.length; i++) {
@@ -137,27 +162,25 @@ public class Controller {
         }
 //        double[] modules = DFT.getModules(myIFFT);
         Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
-        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
+        buildGraphic(lchReconstructedSignal_2_atta, resPoints);
 
-        tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
-    }
+//        ObservableList<XYChart.Data> dataList = ((XYChart.Series) lchAmplitudeModulationRange_2_atta.getData().get(0)).getData();
+//        Point2D[] points = new Point2D[dataList.size()];
+//        for (int i = 0; i < points.length; i++) {
+//            points[i] = new Point2D((Double) dataList.get(i).getXValue(), (Double) dataList.get(i).getYValue());
+//        }
+//        //получили все точки с графика амплитудной модуляции
+//        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(points, 7);
+////        lchCutOffAmplMod_2_atta.getXAxis().setAutoRanging(true); //попытка поменять нижнее значение
+//
+//        buildGraphic(lchCutOffAmplMod_2_atta, points); ///cutOffPoints
+//        buildGraphic(lchReconstructedSignal_2_atta, generatePointsFromIFFT(points)); //cutOffPoints
 
-    @FXML
-    void onExecuteTask_2_atta(ActionEvent event) throws Exception {
-        ObservableList<XYChart.Data> dataList = ((XYChart.Series) lchAmplitudeModulationRange_2_atta.getData().get(0)).getData();
-        Point2D[] points = new Point2D[dataList.size()];
-        for (int i = 0; i < points.length; i++) {
-            points[i] = new Point2D((Double) dataList.get(i).getXValue(), (Double) dataList.get(i).getYValue());
-        }
-        //получили все точки с графика амплитудной модуляции
-        Point2D[] cutOffPoints = SecondAttaActions.cutOffTheSpectrum(points, 2);
-//        lchCutOffAmplMod_2_atta.getXAxis().setAutoRanging(true); //попытка поменять нижнее значение
-
-        buildGraphic(lchCutOffAmplMod_2_atta, cutOffPoints);
     }
 
     private Point2D[] generatePointsFromFFT(Point2D[] points, int maxFrequencyForRange) {
-        Point2D[] pointsByStep = getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate); //выбираем с каким-то шагом точки из основных точек
+        Point2D[] pointsByStep = Utils.getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate); //выбираем с каким-то шагом точки из основных точек
+
 
         double[] y = getFromPointsY(pointsByStep);
 
@@ -174,9 +197,18 @@ public class Controller {
         return Utils.generatePointsWithStepForY(positiveFrequencies, 0, step2);
     }
 
-    private Point2D[] getPointsByStep(Point2D[] points, int step) {
-        return Utils.getPointsByStep(points, step);
+    private Point2D[] generatePointsFromIFFT(Point2D[] points) {
+        double[] y = getArrayPaddedToRequiredSize(getFromPointsY(points));
+        Complex[] myIFFT = DFT.ifft(y);
+        double[] amplitudes = DFT.getRealPart(myIFFT);
+        Point2D[] pointsAfterIFFT = Utils.generatePointsWithStepForY(amplitudes, 0, 1);
+        return pointsAfterIFFT;
     }
+
+    @Deprecated
+//    private Point2D[] getPointsByStep(Point2D[] points, int step) {
+//        return Utils.getPointsByStep(points, step);
+//    }
 
     private double[] getFromPointsY(Point2D[] points) {
         double[] y = new double[points.length];
@@ -259,6 +291,9 @@ public class Controller {
         for (LineChart l : lineChartsRange_2_atta) {
             l.getData().clear();
         }
+        for (LineChart l : lineChartsTask_2_atta) {
+            l.getData().clear();
+        }
     }
 
     @FXML
@@ -282,6 +317,7 @@ public class Controller {
 
         lineCharts_2_atta =  List.of(lchOrigSignal_2_atta, lchAmplitudeModulation_2_atta, lchFrequencyModulation_2_atta, lchPhaseModulation_2_atta);
         lineChartsRange_2_atta = List.of(lchOrigSignalRange_2_atta, lchAmplitudeModulationRange_2_atta, lchFrequencyModulationRange_2_atta, lchPhaseModulationRange_2_atta);
+        lineChartsTask_2_atta = List.of(lchCutOffAmplMod_2_atta, lchReconstructedSignal_2_atta, lchModulatingSignal_2_atta);
 
         toggleGroupSampleRate_2_atta.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override

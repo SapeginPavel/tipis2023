@@ -1,7 +1,5 @@
 package vsu.cs.sapegin.tipis2023.dft;
 
-import java.util.Arrays;
-
 public class DFT {
 
     //fft реализован с учётом частоты дискретизации, её по идее стоило было учитывать при построении графика только
@@ -25,18 +23,6 @@ public class DFT {
 
     public static Complex[] fft(Complex[] x) {
         return generalFourierTransform(x, x.length, false);
-    }
-
-    public static double[] getModulesAfterFFT(Complex[] complexesAfterFFT) {
-        return getModules(complexesAfterFFT);
-    }
-
-    public static double[] getModules(Complex[] yArrOutput) {
-        double[] resArr = new double[yArrOutput.length];
-        for (int i = 0; i < resArr.length; i++) {
-            resArr[i] = Math.sqrt(yArrOutput[i].real * yArrOutput[i].real + yArrOutput[i].im * yArrOutput[i].im);
-        }
-        return resArr;
     }
 
     public static Complex[] ifft(double[] y) {
@@ -75,5 +61,25 @@ public class DFT {
             X[k + N / 2] = XEven[k].minus(XOdd[k].multiply(complex));
         }
         return X;
+    }
+
+    public static double[] getModulesAfterFFT(Complex[] complexesAfterFFT) {
+        return getModules(complexesAfterFFT);
+    }
+
+    public static double[] getModules(Complex[] complexes) {
+        double[] resArr = new double[complexes.length];
+        for (int i = 0; i < resArr.length; i++) {
+            resArr[i] = Math.sqrt(complexes[i].real * complexes[i].real + complexes[i].im * complexes[i].im);
+        }
+        return resArr;
+    }
+
+    public static double[] getRealPart(Complex[] complexes) {
+        double[] res = new double[complexes.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = complexes[i].real;
+        }
+        return res;
     }
 }

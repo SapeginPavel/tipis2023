@@ -33,6 +33,46 @@ public class Utils {
         return index;
     }
 
+    public static int getIndexOfMaxRealPart(Complex[] complex) {
+        int index = 0;
+        double max = 0;
+        for (int i = 0; i < complex.length; i++) {
+            if (complex[i].real > max) {
+                max = complex[i].real;
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public static int getIndexOfNextMinRealPartValue(Complex[] complex, int startIndex) {
+        double min = complex[startIndex].real;
+        int indexOfMin = startIndex;
+        for (int i = startIndex; i < complex.length; i++) {
+            if (complex[i].real < min) {
+                min = complex[i].real;
+                indexOfMin = i;
+            } else {
+                break;
+            }
+        }
+        return indexOfMin;
+    }
+
+    public static int getIndexOfNextMaxRealPartValue(Complex[] complex, int startIndex) {
+        double max = complex[startIndex].real;
+        int indexOfMax = startIndex;
+        for (int i = startIndex; i < complex.length; i++) {
+            if (complex[i].real > max) {
+                max = complex[i].real;
+                indexOfMax = i;
+            } else {
+                break;
+            }
+        }
+        return indexOfMax;
+    }
+
     public static Point2D[] generatePointsWithStepForY(double[] y, double from, double step) {
         Point2D[] points = new Point2D[y.length];
         double x = from;
@@ -42,45 +82,4 @@ public class Utils {
         }
         return points;
     }
-
-    public static Complex[] getEvenElements(Complex[] array) {
-        return getElements(array, 0);
-    }
-
-    public static Complex[] getOddElements(Complex[] array) {
-        return getElements(array, 1);
-    }
-
-    public static Complex[] getElements(Complex[] array, int positions) {
-        Complex[] newArray = new Complex[array.length / 2];
-
-        for (int i = 0; i < array.length; i++) {
-            if (i % 2 == positions) {
-                if (i / 2 >= newArray.length) {
-                    break;
-                }
-                newArray[i / 2] = array[i];
-            }
-        }
-        return newArray;
-    }
-
-//    public static double[] getEvenElements(double[] array) {
-//        return getElements(array, 0);
-//    }
-//
-//    public static double[] getOddElements(double[] array) {
-//        return getElements(array, 1);
-//    }
-//
-//    public static double[] getElements(double[] array, int positions) {
-//        double[] newArray = new double[array.length / 2];
-//
-//        for (int i = 0; i < array.length; i++) {
-//            if (i % 2 == positions) {
-//                newArray[i / 2] = array[i];
-//            }
-//        }
-//        return newArray;
-//    }
 }
