@@ -94,10 +94,18 @@ public class Controller {
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
         buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
-        Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, 1);
-        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, 1);
-        Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, 1);
-        Point2D[] pointsPhaseModRange = generatePointsFromFFT(pointsPhaseMod, 1);
+
+        //↓ не работает ↓
+
+        double step = Options.getDefaultAmountOfPointsForUnitSegment() / (sampleRate + 0.0);
+        int maxFrequencyForRange = Options.getMaxFrequencyForDFT();
+
+        System.out.println("step = " + step);
+
+        Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, step, maxFrequencyForRange);
+        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, step, maxFrequencyForRange);
+        Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, step, maxFrequencyForRange);
+        Point2D[] pointsPhaseModRange = generatePointsFromFFT(pointsPhaseMod, step, maxFrequencyForRange);
 
         buildGraphic(lchOrigSignalRange_2_atta, pointsOrigRange);
         buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
@@ -105,7 +113,6 @@ public class Controller {
         buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
         //Тестирую fft
-        //todo: попробовать поменять максимальный X в Options
 
         lchPhaseModulationRange_2_atta.getData().clear();
 
@@ -115,11 +122,11 @@ public class Controller {
             y[i] = pointsAmplMod[i].getY();
         }
 
-        System.out.println("Size of pointsAmplMod: " + pointsAmplMod.length); //todo
-        Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y), sampleRate);
-        System.out.println("Size of myFFT = " + myFFT.length);
-        System.out.println(Arrays.toString(myFFT));
-        Complex[] myIFFT = DFT.ifft(myFFT, 128); //todo: does not work
+//        System.out.println("Size of pointsAmplMod: " + pointsAmplMod.length); //todo
+        Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
+//        System.out.println("Size of myFFT = " + myFFT.length);
+//        System.out.println(Arrays.toString(myFFT));
+        Complex[] myIFFT = DFT.ifft(myFFT); //todo: does not work
         double[] modules = new double[myIFFT.length];
         for (int i = 0; i < modules.length; i++) {
             modules[i] = myIFFT[i].real;
@@ -135,14 +142,32 @@ public class Controller {
         tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
     }
 
-    private Point2D[] generatePointsFromFFT(Point2D[] points, double step) {
+    private Point2D[] generatePointsFromFFT(Point2D[] points, double step, int maxFrequencyForRange) {
         Point2D[] pointsByStep = getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate); //выбираем с каким-то шагом точки из основных точек
+
+        System.out.println("1280 points are waited. Are = " + pointsByStep.length); //test
 
         double[] y = getFromPointsY(pointsByStep);
 
-        double[] afterFFT = doFFT(y);
+        //небольшое дублирование кода, так как нам надо передавать сразу нужное количество элементов для fft, чтобы учесть это количество в построении графиков
+        double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
 
-        return Utils.generatePointsWithStepForY(afterFFT, 0, step);
+        double[] afterFFT = doFFT(yRequiredSize);
+
+        double step2 = 1.0 / (afterFFT.length / 2.0 / (sampleRate / 2.0));
+        int length = (int) (1 / step2 * maxFrequencyForRange);
+
+        maxFrequencyForRange = Math.min(length, afterFFT.length / 2); //50, 1024
+
+        double[] positiveFrequencies = Arrays.copyOfRange(afterFFT, 0, maxFrequencyForRange);
+
+//        System.out.println("1024 ? have: " + positiveFrequencies.length);
+
+//        double step2 = 1.0 / (positiveFrequencies.length / (sampleRate / 2.0));
+
+//        System.out.println("step2 = " + step2);
+
+        return Utils.generatePointsWithStepForY(positiveFrequencies, 0, step2);
     }
 
     private Point2D[] getPointsByStep(Point2D[] points, int step) {
@@ -159,7 +184,7 @@ public class Controller {
 
     private double[] doFFT(double[] y) {
         double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
-        return DFT.getModulesAfterFFT(DFT.fft(yRequiredSize, sampleRate));
+        return DFT.getModulesAfterFFT(DFT.fft(yRequiredSize));
     }
 
     private double[] getArrayPaddedToRequiredSize(double[] y) {

@@ -15,7 +15,7 @@ public class Options {
     private static double defaultMaxX = 3; //3
     private static int defaultAmountOfPointsForUnitSegment = 256;
 
-    private static int maxFrequencyForDFT = 100;
+    private static int maxFrequencyForDFT = 64;
 
     //фаза
 

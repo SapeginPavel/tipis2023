@@ -5,17 +5,29 @@ import java.util.Arrays;
 public class DFT {
 
     //fft реализован с учётом частоты дискретизации, её по идее стоило было учитывать при построении графика только
+    //есть ли смысл передавать в fft что-то, больше размера периода
 
-    public static Complex[] fft(double[] y, int sampleRate) {
+    public static Complex[] fft(double[] y) {
         Complex[] complexes = new Complex[y.length];
         for (int i = 0; i < complexes.length; i++) {
             complexes[i] = new Complex(y[i], 0);
         }
-        return Arrays.copyOfRange(fft(complexes, sampleRate), 0, sampleRate / 2);
+        return fft(complexes);
+//        return Arrays.copyOfRange(fft(complexes), 0, complexes.length / 2);
     }
 
-    private static Complex[] fft(Complex[] x, int sampleRate) {
-        return generalFourierTransform(x, sampleRate, false);
+    public static Complex[] fft(double[] y, int maxFrequency) {
+        Complex[] complexes = new Complex[y.length];
+        for (int i = 0; i < complexes.length; i++) {
+            complexes[i] = new Complex(y[i], 0);
+        }
+        System.out.println("Return from fft: " + maxFrequency);
+        return fft(complexes);
+//        return Arrays.copyOfRange(fft(complexes), 0, maxFrequency);
+    }
+
+    private static Complex[] fft(Complex[] x) {
+        return generalFourierTransform(x, x.length, false);
     }
 
     public static double[] getModulesAfterFFT(Complex[] complexesAfterFFT) {
@@ -30,20 +42,19 @@ public class DFT {
         return resArr;
     }
 
-    public static Complex[] ifft(double[] y, int sampleRate) {
+    public static Complex[] ifft(double[] y) {
         Complex[] complexes = new Complex[y.length];
         for (int i = 0; i < complexes.length; i++) {
             complexes[i] = new Complex(y[i], 0);
         }
-        return ifft(complexes, sampleRate);
+        return ifft(complexes);
     }
 
-    public static Complex[] ifft(Complex[] x, int sampleRate) {
-        return generalFourierTransform(x, sampleRate, true);
+    public static Complex[] ifft(Complex[] x) {
+        return generalFourierTransform(x, x.length, true);
     }
 
-    private static Complex[] generalFourierTransform(Complex[] x, int sampleRate, boolean inverse) {
-        int N = sampleRate; //x.length
+    private static Complex[] generalFourierTransform(Complex[] x, int N, boolean inverse) {
         if (N == 1) {
             return x;
         }
