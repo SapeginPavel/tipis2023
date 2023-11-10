@@ -94,18 +94,11 @@ public class Controller {
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
         buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
-
-        //↓ не работает ↓
-
-        double step = Options.getDefaultAmountOfPointsForUnitSegment() / (sampleRate + 0.0);
         int maxFrequencyForRange = Options.getMaxFrequencyForDFT();
-
-        System.out.println("step = " + step);
-
-        Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, step, maxFrequencyForRange);
-        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, step, maxFrequencyForRange);
-        Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, step, maxFrequencyForRange);
-        Point2D[] pointsPhaseModRange = generatePointsFromFFT(pointsPhaseMod, step, maxFrequencyForRange);
+        Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, maxFrequencyForRange);
+        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, maxFrequencyForRange);
+        Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, maxFrequencyForRange);
+        Point2D[] pointsPhaseModRange = generatePointsFromFFT(pointsPhaseMod, maxFrequencyForRange);
 
         buildGraphic(lchOrigSignalRange_2_atta, pointsOrigRange);
         buildGraphic(lchAmplitudeModulationRange_2_atta, pointsAmplModRange);
@@ -142,31 +135,21 @@ public class Controller {
         tickPeaksForRange(radioButtonTickYes_2_atta.isSelected());
     }
 
-    private Point2D[] generatePointsFromFFT(Point2D[] points, double step, int maxFrequencyForRange) {
+    private Point2D[] generatePointsFromFFT(Point2D[] points, int maxFrequencyForRange) {
         Point2D[] pointsByStep = getPointsByStep(points, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate); //выбираем с каким-то шагом точки из основных точек
-
-        System.out.println("1280 points are waited. Are = " + pointsByStep.length); //test
 
         double[] y = getFromPointsY(pointsByStep);
 
         //небольшое дублирование кода, так как нам надо передавать сразу нужное количество элементов для fft, чтобы учесть это количество в построении графиков
         double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
-
         double[] afterFFT = doFFT(yRequiredSize);
 
         double step2 = 1.0 / (afterFFT.length / 2.0 / (sampleRate / 2.0));
         int length = (int) (1 / step2 * maxFrequencyForRange);
 
-        maxFrequencyForRange = Math.min(length, afterFFT.length / 2); //50, 1024
+        maxFrequencyForRange = Math.min(length, afterFFT.length / 2);
 
         double[] positiveFrequencies = Arrays.copyOfRange(afterFFT, 0, maxFrequencyForRange);
-
-//        System.out.println("1024 ? have: " + positiveFrequencies.length);
-
-//        double step2 = 1.0 / (positiveFrequencies.length / (sampleRate / 2.0));
-
-//        System.out.println("step2 = " + step2);
-
         return Utils.generatePointsWithStepForY(positiveFrequencies, 0, step2);
     }
 
