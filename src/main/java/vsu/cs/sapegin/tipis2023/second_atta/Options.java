@@ -12,7 +12,7 @@ public class Options {
     private static int meanderFrequency = 1;
 
     private static double defaultMinX = 0;
-    private static double defaultMaxX = 3;
+    private static double defaultMaxX = 3; //3
     private static int defaultAmountOfPointsForUnitSegment = 256;
 
     private static int maxFrequencyForDFT = 100;

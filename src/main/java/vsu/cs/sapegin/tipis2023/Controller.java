@@ -1,6 +1,7 @@
 package vsu.cs.sapegin.tipis2023;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -104,6 +105,7 @@ public class Controller {
         buildGraphic(lchPhaseModulationRange_2_atta, pointsPhaseModRange);
 
         //Тестирую fft
+        //todo: попробовать поменять максимальный X в Options
 
         lchPhaseModulationRange_2_atta.getData().clear();
 
@@ -113,16 +115,18 @@ public class Controller {
             y[i] = pointsAmplMod[i].getY();
         }
 
-//        System.out.println("Size of pointsAmplMod: " + pointsAmplMod.length); //todo
-//        Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y), sampleRate);
-//        Complex[] myIFFT = DFT.ifft(myFFT, sampleRate);
-//        double[] modules = new double[myIFFT.length];
-//        for (int i = 0; i < modules.length; i++) {
-//            modules[i] = myIFFT[i].real;
-//        }
-////        double[] modules = DFT.getModules(myIFFT);
-//        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
-//        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
+        System.out.println("Size of pointsAmplMod: " + pointsAmplMod.length); //todo
+        Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y), sampleRate);
+        System.out.println("Size of myFFT = " + myFFT.length);
+        System.out.println(Arrays.toString(myFFT));
+        Complex[] myIFFT = DFT.ifft(myFFT, 128); //todo: does not work
+        double[] modules = new double[myIFFT.length];
+        for (int i = 0; i < modules.length; i++) {
+            modules[i] = myIFFT[i].real;
+        }
+//        double[] modules = DFT.getModules(myIFFT);
+        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
+        buildGraphic(lchPhaseModulationRange_2_atta, resPoints);
 
 
 

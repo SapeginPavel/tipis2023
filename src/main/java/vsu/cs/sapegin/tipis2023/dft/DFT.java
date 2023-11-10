@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class DFT {
 
+    //fft реализован с учётом частоты дискретизации, её по идее стоило было учитывать при построении графика только
+
     public static Complex[] fft(double[] y, int sampleRate) {
         Complex[] complexes = new Complex[y.length];
         for (int i = 0; i < complexes.length; i++) {
