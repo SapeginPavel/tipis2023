@@ -79,16 +79,12 @@ public class Utils {
     public static int getIndexOfComplexWithMaxModule(Complex[] complex) {
         int index = 0;
         double max = -1;
-        System.out.println("---- Searching for max module");
         for (int i = 0; i < complex.length; i++) {
-            System.out.print(complex[i].getModule() + ", ");
             if (complex[i].getModule() > max) {
                 max = complex[i].getModule();
                 index = i;
             }
         }
-        System.out.println();
-        System.out.println();
         return index;
     }
 
@@ -99,10 +95,10 @@ public class Utils {
             if (complex[i].getModule() < min) {
                 min = complex[i].getModule();
                 indexOfMin = i;
-            } else {
-                break;
             }
         }
+        System.out.println();
+        System.out.println();
         return indexOfMin;
     }
 
@@ -113,8 +109,6 @@ public class Utils {
             if (complex[i].getModule() > max) {
                 max = complex[i].getModule();
                 indexOfMax = i;
-            } else {
-                break;
             }
         }
         return indexOfMax;

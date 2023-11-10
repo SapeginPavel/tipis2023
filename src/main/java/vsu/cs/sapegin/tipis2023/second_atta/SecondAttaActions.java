@@ -41,7 +41,17 @@ public class SecondAttaActions {
         int prevMinMaxMin = indexOfPeak - nextMinMaxMin;
         System.out.println("-- prevMinMaxMin : " + prevMinMaxMin);
 
-        return Arrays.copyOfRange(complex, prevMinMaxMin, nextMinMaxMin);
+        Complex[] res = new Complex[complex.length];
+
+        for (int i = 0; i < res.length; i++) {
+            if (i >= prevMinMaxMin && i <= nextMinMaxMin) {
+                res[i] = complex[i];
+            } else {
+                res[i] = new Complex();
+            }
+        }
+
+        return res;
     }
 
     public static int[] getCarrierFrequencies(Point2D[] points) {

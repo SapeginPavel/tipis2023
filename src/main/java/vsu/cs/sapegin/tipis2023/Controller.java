@@ -145,13 +145,8 @@ public class Controller {
     @FXML
     void onExecuteTask_2_atta(ActionEvent event) throws Exception {
         Point2D[] pointsAmplMod = SinusGenerator.getPointsForSinusWithModulation(Options.getFrequencyBase(), Options.getFrequencyBase(), Options.getAmplitudeBase(), Options.getAmplitudeMod(), false, Options.getMeanderFrequency(), Options.getDefaultMaxX());
-//        Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, Options.getMaxFrequencyForDFT());
 
-//        double[] y = new double[pointsAmplMod.length]; // 256 pointsOrig.length тут будет y[] обрезанного спектра
-        double[] y = getFromPointsY(pointsAmplMod); // 256 pointsOrig.length тут будет y[] обрезанного спектра
-//        for (int i = 0; i < y.length; i++) {
-//            y[i] = pointsAmplMod[i].getY();
-//        }
+        double[] y = getFromPointsY(pointsAmplMod);
 
         Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
         System.out.println("myFFT : " + myFFT.length);
@@ -164,22 +159,21 @@ public class Controller {
         Complex[] myIFFT = DFT.ifft(cutOffGGTRequiredSize);
         System.out.println("myIFFT : " + myIFFT.length);
 
-        double[] ampls = new double[myFFTPositiveFrequencies.length];
-        for (int i = 0; i < ampls.length; i++) {
-            ampls[i] = myFFTPositiveFrequencies[i].getModule();
-        }
-//        double[] modules = DFT.getModules(myIFFT);
-        Point2D[] resPoints1 = Utils.generatePointsWithStepForY(ampls, 0,1);
-        buildGraphic(lchReconstructedSignal_2_atta, resPoints1);
-
-//        double[] modules = new double[myIFFT.length];
-//        for (int i = 0; i < modules.length; i++) {
-//            modules[i] = myIFFT[i].real;
+//        double[] ampls = new double[myFFTPositiveFrequencies.length];
+//        for (int i = 0; i < ampls.length; i++) {
+//            ampls[i] = myFFTPositiveFrequencies[i].getModule();
 //        }
-//        System.out.println("modules : " + modules.length);
-////        double[] modules = DFT.getModules(myIFFT);
-//        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
-//        buildGraphic(lchReconstructedSignal_2_atta, resPoints);
+//        Point2D[] resPoints1 = Utils.generatePointsWithStepForY(ampls, 0,1);
+//        buildGraphic(lchReconstructedSignal_2_atta, resPoints1);
+
+        double[] modules = new double[myIFFT.length];
+        for (int i = 0; i < modules.length; i++) {
+            modules[i] = myIFFT[i].real;
+        }
+        System.out.println("modules : " + modules.length);
+//        double[] modules = DFT.getModules(myIFFT);
+        Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
+        buildGraphic(lchReconstructedSignal_2_atta, resPoints);
 
 
 
