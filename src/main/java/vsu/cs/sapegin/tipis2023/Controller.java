@@ -158,11 +158,8 @@ public class Controller {
         //todo: очень странная формула:
         int amountOfPointsForUnitSegment = (int) (myFFTPositiveFrequencies.length / (sampleRate / 2) * ((sampleRate + 0.0) / Options.getDefaultAmountOfPointsForUnitSegment()));
         System.out.println("amountOfPointsForUnitSegment = " + amountOfPointsForUnitSegment);
-//        int norm = (myFFTPositiveFrequencies.length / (sampleRate / 2));
-//        indexOfPeak = indexOfPeak / norm;
-//        System.out.println("INDEX OF PEAK2 = " + indexOfPeak);
 
-        int width = 1; //берём две точки амплитудного спектра
+        int width = 3; //сколько берём точек амплитудного спектра
         int generalAmountOfPoints = width * amountOfPointsForUnitSegment;
 
         Complex[] cutOffAmplitudeRange = Arrays.copyOfRange(myFFTPositiveFrequencies, indexOfPeak - generalAmountOfPoints, indexOfPeak + generalAmountOfPoints + 1);
@@ -172,29 +169,23 @@ public class Controller {
         Point2D[] pointsCutOff = Utils.generatePointsWithStepForY(amplitudes, (indexOfPeak - generalAmountOfPoints) * step, step);
         buildGraphic(lchCutOffAmplMod_2_atta, pointsCutOff);
 
+        //indexOfPeak
+//        Complex[] cutOffFFT = SecondAttaActions.cutOffTheSpectrum(myFFTPositiveFrequencies);
+        Complex[] cutOffAmplitudeRangeForFFT = new Complex[myFFTPositiveFrequencies.length];
 
-//        int amountOfPointsForCutOff = myFFTPositiveFrequencies.length / norm / (sampleRate / 2); //2 * количество точек в единичном отрезке
-//        double step = 1.0 / (myFFTPositiveFrequencies.length / (sampleRate / 2.0)); // 1/step = столько точек влево и вправо от пика надо взять для обрезанного спектра
-//        System.out.println("AMOUNT amountOfPointsForCutOff = " + amountOfPointsForCutOff);
-//        Complex[] pieceOfCutOffFFT = Arrays.copyOfRange(myFFTPositiveFrequencies, indexOfPeak - amountOfPointsForCutOff, indexOfPeak + amountOfPointsForCutOff + 1);
-//        Complex[] pieceOfCutOffFFT = SecondAttaActions.getPieceOfTheSpectrum(myFFTPositiveFrequencies);
-
-
-        Complex[] cutOffFFT = SecondAttaActions.cutOffTheSpectrum(myFFTPositiveFrequencies);
+        for (int i = 0; i < cutOffAmplitudeRangeForFFT.length; i++) {
+            if (i >= (indexOfPeak - generalAmountOfPoints) && i <= (indexOfPeak + generalAmountOfPoints)) {
+                cutOffAmplitudeRangeForFFT[i] = myFFTPositiveFrequencies[i];
+            } else {
+                cutOffAmplitudeRangeForFFT[i] = new Complex();
+            }
+        }
 
 
 //        System.out.println("cutOffFFT : " + cutOffFFT.length);
-        Complex[] cutOffGGTRequiredSize = getArrayPaddedToRequiredSize(cutOffFFT);
+        Complex[] cutOffGGTRequiredSize = getArrayPaddedToRequiredSize(cutOffAmplitudeRangeForFFT);
 //        System.out.println("cutOffGGTRequiredSize : " + cutOffGGTRequiredSize.length);
         Complex[] myIFFT = DFT.ifft(cutOffGGTRequiredSize);
-//        System.out.println("myIFFT : " + myIFFT.length);
-
-//        double[] ampls = new double[myFFTPositiveFrequencies.length];
-//        for (int i = 0; i < ampls.length; i++) {
-//            ampls[i] = myFFTPositiveFrequencies[i].getModule();
-//        }
-//        Point2D[] resPoints1 = Utils.generatePointsWithStepForY(ampls, 0,1);
-//        buildGraphic(lchReconstructedSignal_2_atta, resPoints1);
 
         double[] modules = new double[myIFFT.length];
         for (int i = 0; i < modules.length; i++) {
