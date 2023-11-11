@@ -63,10 +63,6 @@ public class DFT {
         return X;
     }
 
-    public static double[] getModulesAfterFFT(Complex[] complexesAfterFFT) {
-        return getModules(complexesAfterFFT);
-    }
-
     public static double[] getModules(Complex[] complexes) {
         double[] resArr = new double[complexes.length];
         for (int i = 0; i < resArr.length; i++) {

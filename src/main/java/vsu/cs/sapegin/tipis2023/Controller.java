@@ -149,15 +149,45 @@ public class Controller {
         double[] y = getFromPointsY(pointsAmplMod);
 
         Complex[] myFFT = DFT.fft(getArrayPaddedToRequiredSize(y));
-        System.out.println("myFFT : " + myFFT.length);
+        System.out.println("myFFT SIZE = " + myFFT.length);
         Complex[] myFFTPositiveFrequencies = Arrays.copyOfRange(myFFT, 0, myFFT.length / 2);
-        System.out.println("myFFTPositiveFrequencies : " + myFFTPositiveFrequencies.length);
+        System.out.println("myFFTPositiveFrequencies SIZE = " + myFFTPositiveFrequencies.length);
+
+        int indexOfPeak = Utils.getIndexOfComplexWithMaxModule(myFFTPositiveFrequencies);
+        System.out.println("INDEX OF PEAK = " + indexOfPeak);
+        //todo: очень странная формула:
+        int amountOfPointsForUnitSegment = (int) (myFFTPositiveFrequencies.length / (sampleRate / 2) * ((sampleRate + 0.0) / Options.getDefaultAmountOfPointsForUnitSegment()));
+        System.out.println("amountOfPointsForUnitSegment = " + amountOfPointsForUnitSegment);
+//        int norm = (myFFTPositiveFrequencies.length / (sampleRate / 2));
+//        indexOfPeak = indexOfPeak / norm;
+//        System.out.println("INDEX OF PEAK2 = " + indexOfPeak);
+
+        int width = 1; //берём две точки амплитудного спектра
+        int generalAmountOfPoints = width * amountOfPointsForUnitSegment;
+
+        Complex[] cutOffAmplitudeRange = Arrays.copyOfRange(myFFTPositiveFrequencies, indexOfPeak - generalAmountOfPoints, indexOfPeak + generalAmountOfPoints + 1);
+        double step = 1.0 / amountOfPointsForUnitSegment;
+
+        double[] amplitudes = DFT.getModules(cutOffAmplitudeRange);
+        Point2D[] pointsCutOff = Utils.generatePointsWithStepForY(amplitudes, (indexOfPeak - generalAmountOfPoints) * step, step);
+        buildGraphic(lchCutOffAmplMod_2_atta, pointsCutOff);
+
+
+//        int amountOfPointsForCutOff = myFFTPositiveFrequencies.length / norm / (sampleRate / 2); //2 * количество точек в единичном отрезке
+//        double step = 1.0 / (myFFTPositiveFrequencies.length / (sampleRate / 2.0)); // 1/step = столько точек влево и вправо от пика надо взять для обрезанного спектра
+//        System.out.println("AMOUNT amountOfPointsForCutOff = " + amountOfPointsForCutOff);
+//        Complex[] pieceOfCutOffFFT = Arrays.copyOfRange(myFFTPositiveFrequencies, indexOfPeak - amountOfPointsForCutOff, indexOfPeak + amountOfPointsForCutOff + 1);
+//        Complex[] pieceOfCutOffFFT = SecondAttaActions.getPieceOfTheSpectrum(myFFTPositiveFrequencies);
+
+
         Complex[] cutOffFFT = SecondAttaActions.cutOffTheSpectrum(myFFTPositiveFrequencies);
-        System.out.println("cutOffFFT : " + cutOffFFT.length);
+
+
+//        System.out.println("cutOffFFT : " + cutOffFFT.length);
         Complex[] cutOffGGTRequiredSize = getArrayPaddedToRequiredSize(cutOffFFT);
-        System.out.println("cutOffGGTRequiredSize : " + cutOffGGTRequiredSize.length);
+//        System.out.println("cutOffGGTRequiredSize : " + cutOffGGTRequiredSize.length);
         Complex[] myIFFT = DFT.ifft(cutOffGGTRequiredSize);
-        System.out.println("myIFFT : " + myIFFT.length);
+//        System.out.println("myIFFT : " + myIFFT.length);
 
 //        double[] ampls = new double[myFFTPositiveFrequencies.length];
 //        for (int i = 0; i < ampls.length; i++) {
@@ -170,7 +200,7 @@ public class Controller {
         for (int i = 0; i < modules.length; i++) {
             modules[i] = myIFFT[i].real;
         }
-        System.out.println("modules : " + modules.length);
+//        System.out.println("modules : " + modules.length);
 //        double[] modules = DFT.getModules(myIFFT);
         Point2D[] resPoints = Utils.generatePointsWithStepForY(modules, 0,1);
         buildGraphic(lchReconstructedSignal_2_atta, resPoints);
@@ -201,13 +231,13 @@ public class Controller {
         double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
         double[] afterFFT = doFFT(yRequiredSize);
 
-        double step2 = 1.0 / (afterFFT.length / 2.0 / (sampleRate / 2.0));
-        int length = (int) (1 / step2 * maxFrequencyForRange);
+        double step = 1.0 / (afterFFT.length / 2.0 / (sampleRate / 2.0));
+        int length = (int) (1 / step * maxFrequencyForRange);
 
         maxFrequencyForRange = Math.min(length, afterFFT.length / 2);
 
         double[] positiveFrequencies = Arrays.copyOfRange(afterFFT, 0, maxFrequencyForRange);
-        return Utils.generatePointsWithStepForY(positiveFrequencies, 0, step2);
+        return Utils.generatePointsWithStepForY(positiveFrequencies, 0, step);
     }
 
     private Point2D[] generatePointsFromIFFT(Point2D[] points) {
@@ -233,7 +263,7 @@ public class Controller {
 
     private double[] doFFT(double[] y) {
         double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
-        return DFT.getModulesAfterFFT(DFT.fft(yRequiredSize));
+        return DFT.getModules(DFT.fft(yRequiredSize));
     }
 
     private double[] getArrayPaddedToRequiredSize(double[] y) {

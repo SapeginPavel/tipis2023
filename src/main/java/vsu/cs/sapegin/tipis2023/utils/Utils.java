@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import vsu.cs.sapegin.tipis2023.dft.Complex;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Utils {
 
@@ -90,25 +91,32 @@ public class Utils {
 
     public static int getIndexOfNextComplexWithMinModule(Complex[] complex, int startIndex) {
         double min = complex[startIndex].getModule();
-        int indexOfMin = startIndex;
+        int indexOfMin = startIndex + 1;
+        for (int i = 0; i < complex.length; i++) {
+//            System.out.print(complex[i].getModule() + ", ");
+        }
+//        System.out.println();
+//        System.out.println();
         for (int i = startIndex; i < complex.length; i++) {
             if (complex[i].getModule() < min) {
                 min = complex[i].getModule();
                 indexOfMin = i;
+            } else {
+                break;
             }
         }
-        System.out.println();
-        System.out.println();
         return indexOfMin;
     }
 
     public static int getIndexOfNextComplexWithMaxModule(Complex[] complex, int startIndex) {
         double max = complex[startIndex].getModule();
-        int indexOfMax = startIndex;
+        int indexOfMax = startIndex + 1;
         for (int i = startIndex; i < complex.length; i++) {
             if (complex[i].getModule() > max) {
                 max = complex[i].getModule();
                 indexOfMax = i;
+            } else {
+                break;
             }
         }
         return indexOfMax;
