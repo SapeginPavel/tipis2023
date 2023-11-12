@@ -2,22 +2,22 @@ package vsu.cs.sapegin.tipis2023.second_atta;
 
 public class Options {
 
-    //ощущение, что моё обратное преобразование фурье не работает
+    private static int widthOfCutOffSignal = 2;
     private static int amplitudeBase = 1;
     private static int amplitudeMod = 2;
 
-    private static int frequencyBase = 8; //8
+    private static int frequencyBase = 8;
     private static int frequencyMod = 14;
 
     private static int meanderFrequency = 1;
 
     private static double defaultMinX = 0;
-    private static double defaultMaxX = 3; //3
-    private static int defaultAmountOfPointsForUnitSegment = 256; //256
+
+    //Кратные двум величины:
+    private static double defaultMaxX = 4;
+    private static int defaultAmountOfPointsForUnitSegment = 512; //256
 
     private static int maxFrequencyForDFT = 64;
-
-    //фаза
 
 
     public static int getAmplitudeBase() {
@@ -90,5 +90,13 @@ public class Options {
 
     public static void setMaxFrequencyForDFT(int maxFrequencyForDFT) {
         Options.maxFrequencyForDFT = maxFrequencyForDFT;
+    }
+
+    public static int getWidthOfCutOffSignal() {
+        return widthOfCutOffSignal;
+    }
+
+    public static void setWidthOfCutOffSignal(int widthOfCutOffSignal) {
+        Options.widthOfCutOffSignal = widthOfCutOffSignal;
     }
 }

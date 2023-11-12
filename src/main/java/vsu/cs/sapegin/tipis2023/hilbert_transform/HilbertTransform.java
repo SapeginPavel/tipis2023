@@ -14,11 +14,11 @@ public class HilbertTransform {
         Complex[] hilbertFilter = new Complex[length];
         int mid = length / 2;
         hilbertFilter[0] = new Complex();
-        hilbertFilter[mid] = new Complex(1);
+        hilbertFilter[mid] = new Complex(1, 1);
         for (int i = 1; i < mid; i++) {
-            double sign = (i % 2 == 0) ? -1.0 : 1.0;
-            hilbertFilter[i] = new Complex(sign * 2);
-            hilbertFilter[length - i] = new Complex(sign * 2);
+            double sign = (i % 2 == 0) ? -1.0 : 1.0; //по сути, меняет знаки
+            hilbertFilter[i] = new Complex(sign * 2, sign * 2);
+            hilbertFilter[length - i] = new Complex(sign * 2, sign * 2);
         }
 
         // Умножение спектра на фильтр Гильберта
