@@ -15,7 +15,7 @@ public class Options {
 
     //Кратные двум величины:
     private static double defaultMaxX = 4;
-    private static int defaultAmountOfPointsForUnitSegment = 512; //256
+    private static int defaultAmountOfPointsForUnitSegment = 256; //256
 
     private static int maxFrequencyForDFT = 64;
 

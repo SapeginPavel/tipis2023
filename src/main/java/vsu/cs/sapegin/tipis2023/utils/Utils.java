@@ -8,6 +8,22 @@ import java.util.List;
 
 public class Utils {
 
+    public static double[] getModulesOfComplexes(Complex[] complexes) {
+        double[] resArr = new double[complexes.length];
+        for (int i = 0; i < resArr.length; i++) {
+            resArr[i] = Math.sqrt(complexes[i].real * complexes[i].real + complexes[i].im * complexes[i].im);
+        }
+        return resArr;
+    }
+
+    public static double[] getRealPartOfComplexes(Complex[] complexes) {
+        double[] res = new double[complexes.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = complexes[i].real;
+        }
+        return res;
+    }
+
     public static Point2D[] getReverseArray(Point2D[] arr) {
         Point2D[] resArr = new Point2D[arr.length];
         for (int i = 0; i < arr.length; i++) {

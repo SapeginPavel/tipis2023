@@ -63,19 +63,4 @@ public class DFT {
         return X;
     }
 
-    public static double[] getModules(Complex[] complexes) {
-        double[] resArr = new double[complexes.length];
-        for (int i = 0; i < resArr.length; i++) {
-            resArr[i] = Math.sqrt(complexes[i].real * complexes[i].real + complexes[i].im * complexes[i].im);
-        }
-        return resArr;
-    }
-
-    public static double[] getRealPart(Complex[] complexes) {
-        double[] res = new double[complexes.length];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = complexes[i].real;
-        }
-        return res;
-    }
 }

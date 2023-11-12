@@ -252,14 +252,6 @@
                               <ToggleGroup fx:id="toggleGroupSampleRate_2_atta" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="radioButtonSampleRate32_2_atta" mnemonicParsing="false" text="32" toggleGroup="$toggleGroupSampleRate_2_atta">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin>
-                        </RadioButton>
                         <RadioButton fx:id="radioButtonSampleRate128_2_atta" mnemonicParsing="false" text="128" toggleGroup="$toggleGroupSampleRate_2_atta" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
