@@ -38,20 +38,19 @@ public class SinusGenerator {
     public static Point2D[] getPointsForSinusWithModulation(int bFrequency, int mFrequency, int bAmplitude, int mAmplitude, boolean isPhaseModulation, int meanderFrequency, double maxX) {
         int size = (int) (Options.getDefaultAmountOfPointsForUnitSegment() * maxX);
         List<Point2D> points = new ArrayList<>(size);
-        double meanderConstLength = 1.0 / meanderFrequency / 2; //длина участка, когда меандр постоянен по значению
-        int amountOfSegments = (int) (maxX / meanderConstLength);
+        double meanderConstSegment = 1.0 / meanderFrequency / 2; //длина участка, когда меандр постоянен по значению
+        int amountOfSegments = (int) (maxX / meanderConstSegment);
         for (int i = 0; i < amountOfSegments; i++) {
             Point2D[] temp;
             if (i % 2 == 0) {
-                temp = getPointsForSinusForSegment(mFrequency, mAmplitude, meanderConstLength * i, (meanderConstLength) * (i + 1));
+                temp = getPointsForSinusForSegment(mFrequency, mAmplitude, (meanderConstSegment + 1.0 / size) * i, (meanderConstSegment + 1.0 / size) * (i + 1));
             } else {
-                temp = getPointsForSinusForSegment(bFrequency, bAmplitude, meanderConstLength * i, (meanderConstLength) * (i + 1));
+                temp = getPointsForSinusForSegment(bFrequency, bAmplitude, (meanderConstSegment + 1.0 / size) * i, (meanderConstSegment + 1.0 / size) * (i + 1));
                 if (isPhaseModulation) {
                     temp = Utils.getReverseArray(temp);
                 }
             }
             points.addAll(Arrays.asList(temp));
-            points.remove(points.size() - 1);
         }
         return points.toArray(new Point2D[0]);
     }

@@ -108,8 +108,8 @@ public class Controller {
         buildGraphic(lchFrequencyModulation_2_atta, pointsFreqMod);
         buildGraphic(lchPhaseModulation_2_atta, pointsPhaseMod);
 
-//        int maxFrequencyForRange = Options.getMaxFrequencyForDFT();
-        int maxFrequencyForRange = sampleRate / 2;
+        int maxFrequencyForRange = Options.getMaxFrequencyForDFT();
+//        int maxFrequencyForRange = sampleRate / 2;
         Point2D[] pointsOrigRange = generatePointsFromFFT(pointsOrig, maxFrequencyForRange);
         Point2D[] pointsAmplModRange = generatePointsFromFFT(pointsAmplMod, maxFrequencyForRange);
         Point2D[] pointsFreqModRange = generatePointsFromFFT(pointsFreqMod, maxFrequencyForRange);
@@ -146,24 +146,29 @@ public class Controller {
 //        Point2D[] pointsCutOffAmplModRange = Utils.generatePointsWithStepForY(cutOffYAmplModRange, (peakIndex - amountOfPointsForThisWidth) / (amountOfPointsForUnitSegment + 0.0), step);
 //        buildGraphic(lchCutOffAmplMod_2_atta, pointsCutOffAmplModRange);
 
-        System.out.println("in");
+        System.out.println();
+        System.out.println("*** IN ***");
+        System.out.println();
         Point2D[] pointsAmplMod = getPointsFromLineChartWithStep(lchAmplitudeModulation_2_atta, Options.getDefaultAmountOfPointsForUnitSegment() / sampleRate);
         double[] yAmplMod = getFromPointsY(pointsAmplMod);
         System.out.println("yAmplMod size: " + yAmplMod.length);
-        Complex[] afterFFT = DFT.fft(getArrayPaddedToRequiredSize(yAmplMod, "afterFFT"));
+        Complex[] afterFFT = doFFT(yAmplMod);
+        System.out.println("afterFFT size = " + afterFFT.length);
         Complex[] afterFFTPositiveFrequencies = Arrays.copyOfRange(afterFFT, 0, afterFFT.length / 2);
+        System.out.println("afterFFTPositiveFrequencies size = " + afterFFTPositiveFrequencies.length);
 
         int indexOfPeak = Utils.getIndexOfComplexWithMaxModule(afterFFTPositiveFrequencies);
+        System.out.println("indexOfPeak = " + indexOfPeak);
 //        int amountOfPointsForUnitSegment = afterFFT.length / Options.getDefaultAmountOfPointsForUnitSegment();
-        int amountOfPointsForUnitSegment = afterFFTPositiveFrequencies.length / (Options.getDefaultAmountOfPointsForUnitSegment() / 2);
-        int width = Options.getWidthOfCutOffSignal(); //сколько берём целых точек амплитудного спектра
-        int generalAmountOfPoints = width * amountOfPointsForUnitSegment;
+        int amountOfPointsInUnitSegment = afterFFTPositiveFrequencies.length / (sampleRate / 2); //todo: следить
+        int amountOfUnitSegments = Options.getWidthOfCutOffSignal(); //сколько берём целых точек амплитудного спектра
+        int generalAmountOfPoints = amountOfUnitSegments * amountOfPointsInUnitSegment;
+        System.out.println("generalAmountOfPoints = " + generalAmountOfPoints);
 
         Complex[] cutOffAmplitudeRange = Arrays.copyOfRange(afterFFTPositiveFrequencies, indexOfPeak - generalAmountOfPoints, indexOfPeak + generalAmountOfPoints + 1);
 
-
         double[] amplitudes = Utils.getModulesOfComplexes(cutOffAmplitudeRange);
-        double step = 1.0 / amountOfPointsForUnitSegment;
+        double step = 1.0 / amountOfPointsInUnitSegment;
         Point2D[] pointsAfterCutOff = Utils.generatePointsWithStepForY(amplitudes, (indexOfPeak - generalAmountOfPoints) * step, step);
         buildGraphic(lchCutOffAmplMod_2_atta, pointsAfterCutOff);
 
@@ -177,11 +182,11 @@ public class Controller {
             }
         }
 
-        Complex[] cutOffFFTRequiredSize = getArrayPaddedToRequiredSize(cutOffAmplitudeRangeForFFT);
+        Complex[] cutOffFFTRequiredSize = getArrayPaddedToSizeOf2Degree(cutOffAmplitudeRangeForFFT);
         Complex[] ifftCutOffComplex = DFT.ifft(cutOffFFTRequiredSize);
 
         double[] amplitudesFromRealPart = Utils.getRealPartOfComplexes(ifftCutOffComplex);
-        double stepAfterIFFT = 1 / (sampleRate / 2.0); //так как IFFT уже меньше в 2 раза
+        double stepAfterIFFT = 1 / (sampleRate / 2.0); //так как после IFFT тот же размер, какой у массива положительных частот
         Point2D[] ifftCutOffPoints = Utils.generatePointsWithStepForY(amplitudesFromRealPart, 0, stepAfterIFFT);
         buildGraphic(lchReconstructedSignal_2_atta, ifftCutOffPoints);
 
@@ -190,12 +195,29 @@ public class Controller {
         Point2D[] pointsHilbert = Utils.generatePointsWithStepForY(hilbertAmplitudes, 0, stepAfterIFFT);
         buildGraphic(lchHilbertTransform_2_atta, pointsHilbert);
 
-        double minHilbertAmplitude = hilbertAmplitudes[0];
+        //нужно найти первый максимум и первый минимум, а потом разницу их
         double maxHilbertAmplitude = hilbertAmplitudes[0];
+        int indexOfMaxHilbertAmplitude = 0;
         for (int i = 1; i < hilbertAmplitudes.length; i++) {
-            maxHilbertAmplitude = Math.max(maxHilbertAmplitude, hilbertAmplitudes[i]);
-            minHilbertAmplitude = Math.min(minHilbertAmplitude, hilbertAmplitudes[i]);
+//            maxHilbertAmplitude = Math.max(maxHilbertAmplitude, hilbertAmplitudes[i]);
+//            minHilbertAmplitude = Math.min(minHilbertAmplitude, hilbertAmplitudes[i]);
+            if (hilbertAmplitudes[i] >= maxHilbertAmplitude) {
+                maxHilbertAmplitude = hilbertAmplitudes[i];
+                indexOfMaxHilbertAmplitude = i;
+            } else {
+                break;
+            }
         }
+        double minHilbertAmplitude = hilbertAmplitudes[indexOfMaxHilbertAmplitude];
+        for (int i = indexOfMaxHilbertAmplitude + 1; i < hilbertAmplitudes.length; i++) {
+            if (hilbertAmplitudes[i] <= minHilbertAmplitude) {
+                minHilbertAmplitude = hilbertAmplitudes[i];
+            } else {
+                break;
+            }
+        }
+        System.out.println("maxHilbertAmplitude = " + maxHilbertAmplitude);
+        System.out.println("minHilbertAmplitude = " + minHilbertAmplitude);
         double[] fromComparator = SignalComparator.generateSignalByCompareInputSignalWithBaseSignal(hilbertAmplitudes, (maxHilbertAmplitude - minHilbertAmplitude) / 2 + minHilbertAmplitude);
 
         System.out.println(Arrays.toString(fromComparator));
@@ -207,7 +229,6 @@ public class Controller {
     private Point2D[] getPointsFromLineChartWithStep(LineChart lch, int step) {
         ObservableList<XYChart.Data> dataList = ((XYChart.Series) lch.getData().get(lch.getData().size() - 1)).getData();
         Point2D[] allPoints = new Point2D[dataList.size()];
-        System.out.println("allPoints: " + allPoints.length);
         for (int i = 0; i < allPoints.length; i++) {
             allPoints[i] = new Point2D((Double) dataList.get(i).getXValue(), (Double) dataList.get(i).getYValue());
         }
@@ -220,7 +241,7 @@ public class Controller {
         double[] y = getFromPointsY(pointsByStep);
 
         //небольшое дублирование кода, так как нам надо передавать сразу нужное количество элементов для fft, чтобы учесть это количество в построении графиков
-        double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
+        double[] yRequiredSize = getArrayPaddedToSizeOf2Degree(y);
         double[] afterFFT = doFFTAndGetModules(yRequiredSize);
 
         double step = (sampleRate + 0.0) / afterFFT.length;
@@ -246,11 +267,11 @@ public class Controller {
     }
 
     private Complex[] doFFT(double[] y) {
-        double[] yRequiredSize = getArrayPaddedToRequiredSize(y);
+        double[] yRequiredSize = getArrayPaddedToSizeOf2Degree(y);
         return DFT.fft(yRequiredSize);
     }
 
-    private double[] getArrayPaddedToRequiredSize(double[] y, String s) {
+    private double[] getArrayPaddedToSizeOf2Degree(double[] y, String s) {
         int size = getMinNecessarySizeOfArrayForFFT(y);
         System.out.println(s);
         if (size > y.length) {
@@ -266,7 +287,7 @@ public class Controller {
         }
     }
 
-    private double[] getArrayPaddedToRequiredSize(double[] y) {
+    private double[] getArrayPaddedToSizeOf2Degree(double[] y) {
         int size = getMinNecessarySizeOfArrayForFFT(y);
         if (size > y.length) {
             double[] newY = new double[size];
@@ -292,7 +313,7 @@ public class Controller {
         return size;
     }
 
-    private Complex[] getArrayPaddedToRequiredSize(Complex[] complex) {
+    private Complex[] getArrayPaddedToSizeOf2Degree(Complex[] complex) {
         int size = getMinNecessarySizeOfArrayForFFT(complex);
         if (size > complex.length) {
             Complex[] newComplex = new Complex[size];

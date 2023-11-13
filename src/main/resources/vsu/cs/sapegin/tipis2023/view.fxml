@@ -148,7 +148,7 @@
                                     <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
                                        <tickLabelFont>
                                           <Font name="Times New Roman" size="14.0" />
                                        </tickLabelFont>
@@ -168,7 +168,7 @@
                                     <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
                                        <tickLabelFont>
                                           <Font name="Times New Roman" size="14.0" />
                                        </tickLabelFont>
@@ -188,7 +188,7 @@
                                     <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
                                        <tickLabelFont>
                                           <Font name="Times New Roman" size="14.0" />
                                        </tickLabelFont>
@@ -208,7 +208,7 @@
                                     <NumberAxis minorTickCount="0" minorTickLength="0.0" side="BOTTOM" tickLabelGap="2.0" tickLength="3.0" tickUnit="0.0" upperBound="5.0" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
+                                    <NumberAxis lowerBound="-1.0" minorTickCount="1" minorTickLength="0.0" minorTickVisible="false" tickLabelGap="5.0" tickLabelsVisible="false" tickLength="3.0" tickUnit="0.0" upperBound="1.0">
                                        <tickLabelFont>
                                           <Font name="Times New Roman" size="14.0" />
                                        </tickLabelFont>
