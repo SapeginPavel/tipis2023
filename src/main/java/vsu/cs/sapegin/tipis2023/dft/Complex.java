@@ -18,11 +18,6 @@ public class Complex {
         return new Complex(real, im);
     }
 
-    public void add(Complex other) {
-        this.real += other.real;
-        this.im += other.im;
-    }
-
     public Complex plus(Complex other) {
         return new Complex(this.real + other.real, this.im + other.im);
     }
