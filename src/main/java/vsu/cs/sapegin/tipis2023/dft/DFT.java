@@ -2,9 +2,6 @@ package vsu.cs.sapegin.tipis2023.dft;
 
 public class DFT {
 
-    //fft реализован с учётом частоты дискретизации, её по идее стоило было учитывать при построении графика только
-    //есть ли смысл передавать в fft что-то, больше размера периода
-
     public static Complex[] fft(double[] y) {
         Complex[] complexes = new Complex[y.length];
         for (int i = 0; i < complexes.length; i++) {
