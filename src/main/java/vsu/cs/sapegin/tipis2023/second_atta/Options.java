@@ -9,7 +9,7 @@ public class Options {
     private static int frequencyBase = 8;
     private static int frequencyMod = 14;
 
-    private static int meanderFrequency = 1;
+    private static int meanderFrequency = 16;
 
     private static double defaultMinX = 0;
 

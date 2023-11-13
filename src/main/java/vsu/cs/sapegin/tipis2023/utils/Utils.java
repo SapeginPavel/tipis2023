@@ -3,10 +3,19 @@ package vsu.cs.sapegin.tipis2023.utils;
 import javafx.geometry.Point2D;
 import vsu.cs.sapegin.tipis2023.dft.Complex;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Utils {
+
+    public static int getIndexOfMax(double[] arr) {
+        double max = arr[0];
+        int index = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+                index = i;
+            }
+        }
+        return index;
+    }
 
     public static double[] getModulesOfComplexes(Complex[] complexes) {
         double[] resArr = new double[complexes.length];
@@ -40,59 +49,6 @@ public class Utils {
         return p;
     }
 
-    public static int getIndexOfMaxValueY(Point2D[] points) {
-        int index = 0;
-        double max = 0;
-        for (int i = 0; i < points.length; i++) {
-            if (points[i].getY() > max) {
-                max = points[i].getY();
-                index = i;
-            }
-        }
-        return index;
-    }
-
-//    public static int getIndexOfMaxRealPart(Complex[] complex) {
-//        System.out.println(Arrays.toString(complex));
-//        int index = 0;
-//        double max = -1;
-//        for (int i = 0; i < complex.length; i++) {
-//            if (complex[i].real > max) {
-//                max = complex[i].real;
-//                index = i;
-//            }
-//        }
-//        return index;
-//    }
-//
-//    public static int getIndexOfNextMinRealPartValue(Complex[] complex, int startIndex) {
-//        double min = complex[startIndex].real;
-//        int indexOfMin = startIndex;
-//        for (int i = startIndex; i < complex.length; i++) {
-//            if (complex[i].real < min) {
-//                min = complex[i].real;
-//                indexOfMin = i;
-//            } else {
-//                break;
-//            }
-//        }
-//        return indexOfMin;
-//    }
-//
-//    public static int getIndexOfNextMaxRealPartValue(Complex[] complex, int startIndex) {
-//        double max = complex[startIndex].real;
-//        int indexOfMax = startIndex;
-//        for (int i = startIndex; i < complex.length; i++) {
-//            if (complex[i].real > max) {
-//                max = complex[i].real;
-//                indexOfMax = i;
-//            } else {
-//                break;
-//            }
-//        }
-//        return indexOfMax;
-//    }
-
     public static int getIndexOfComplexWithMaxModule(Complex[] complex) {
         int index = 0;
         double max = -1;
@@ -103,39 +59,6 @@ public class Utils {
             }
         }
         return index;
-    }
-
-    public static int getIndexOfNextComplexWithMinModule(Complex[] complex, int startIndex) {
-        double min = complex[startIndex].getModule();
-        int indexOfMin = startIndex + 1;
-        for (int i = 0; i < complex.length; i++) {
-//            System.out.print(complex[i].getModule() + ", ");
-        }
-//        System.out.println();
-//        System.out.println();
-        for (int i = startIndex; i < complex.length; i++) {
-            if (complex[i].getModule() < min) {
-                min = complex[i].getModule();
-                indexOfMin = i;
-            } else {
-                break;
-            }
-        }
-        return indexOfMin;
-    }
-
-    public static int getIndexOfNextComplexWithMaxModule(Complex[] complex, int startIndex) {
-        double max = complex[startIndex].getModule();
-        int indexOfMax = startIndex + 1;
-        for (int i = startIndex; i < complex.length; i++) {
-            if (complex[i].getModule() > max) {
-                max = complex[i].getModule();
-                indexOfMax = i;
-            } else {
-                break;
-            }
-        }
-        return indexOfMax;
     }
 
     public static Point2D[] generatePointsWithStepForY(double[] y, double from, double step) {
